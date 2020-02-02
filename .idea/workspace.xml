@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="788ba54f-9fff-47dd-b334-6d04b272738e" name="Default Changelist" comment="" />
+    <list default="true" id="788ba54f-9fff-47dd-b334-6d04b272738e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring-server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/spring-server/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +60,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580674080239</updated>
-      <workItem from="1580674081803" duration="749000" />
+      <workItem from="1580674081803" duration="1580000" />
     </task>
     <servers />
   </component>
