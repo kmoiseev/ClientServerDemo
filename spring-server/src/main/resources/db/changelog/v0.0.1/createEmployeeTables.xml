@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="e50b3a3d-f284-4c49-9e22-8a08386734e3" author="Konstantin Moiseev">
+        <comment>Create employee table</comment>
+        <createTable tableName="employee">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="dd10c769-65aa-473b-807f-4ab6d7cd3d53" author="Konstantin Moiseev">
+        <comment>Create employee salary table</comment>
+        <createTable tableName="employee_salary">
+            <column name="employee" type="INT">
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_salary_employee"
+                        references="employee(id)"
+                />
+            </column>
+            <column name="salary" type="BIGINT" >
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
