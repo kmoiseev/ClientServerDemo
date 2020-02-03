@@ -2,7 +2,7 @@ import {connect} from 'react-redux'
 import {getEmployeeFormName, getEmployeeFormSalary} from "../../selectors/EmployeeFormSelector";
 import EmployeeForm from "../views/EmployeeForm"
 import {updateEmployeeFormName, updateEmployeeFormSalary} from "../../actions/EmployeeFormActions";
-import {createEmployee} from "../../actions/composite/EmployeeCompositeActions";
+import {createEmployee} from "../../actions/composite/EmployeeCompositeApiActions";
 import {isInvalid} from "../../selectors/ValidationSelector";
 import {getKeyForEmployeeFormName, getKeyForEmployeeFormSalary} from "../../static/ValidationKeyBuilder";
 import {markInvalid, markValid} from "../../actions/ValidationActions";

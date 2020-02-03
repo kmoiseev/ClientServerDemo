@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import EmployeeTable from "../views/EmployeeTable"
-import {refreshAllEmployees, updateEmployeeSalary} from "../../actions/composite/EmployeeCompositeActions";
+import {refreshAllEmployees, updateEmployeeSalary} from "../../actions/composite/EmployeeCompositeApiActions";
 import {getAllEmployeesList} from "../../selectors/EmployeeListSelector";
 import {updateEmployeeListSingleEmployeeSalary} from "../../actions/EmployeeListActions";
 import withInitializer from "../decorators/Initializer";
