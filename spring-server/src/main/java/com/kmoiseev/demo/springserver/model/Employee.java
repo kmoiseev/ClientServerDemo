@@ -15,6 +15,7 @@ public class Employee {
     @Id
     @With
     private final Integer id;
+    @With
     private final String name;
     @With
     private final EmployeeSalary salary;

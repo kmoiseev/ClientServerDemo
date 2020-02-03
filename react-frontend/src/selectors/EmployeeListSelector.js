@@ -1,0 +1,1 @@
+export const getAllEmployeesList = (state) => state.employeeList;

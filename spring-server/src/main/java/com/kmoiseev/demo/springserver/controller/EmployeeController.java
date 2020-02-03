@@ -39,6 +39,22 @@ public class EmployeeController {
         );
     }
 
+    @PatchMapping(
+            value = "update/{employeeId}"
+    )
+    public EmployeeOutputView update(
+            @PathVariable("employeeId") Integer employeeId,
+            @RequestBody EmployeeInputView employeeInputView
+    ) {
+        return EmployeeOutputView.of(
+                service.update(
+                        employeeId,
+                        employeeInputView.getName(),
+                        employeeInputView.getSalary()
+                )
+        );
+    }
+
     @GetMapping(
             value = "get/all/sort/id/asc"
     )
@@ -49,18 +65,6 @@ public class EmployeeController {
         )
                 .sorted(Comparator.comparingInt(Employee::getId))
                 .map(EmployeeOutputView::of);
-    }
-
-    @PatchMapping(
-            value = "update/{employeeId}/salary/{salary}"
-    )
-    public EmployeeOutputView updateSalary(
-            @PathVariable("employeeId") Integer employeeId,
-            @PathVariable("salary") Long salary
-    ) {
-        return EmployeeOutputView.of(
-                service.updateSalary(employeeId, salary)
-        );
     }
 
     @DeleteMapping(

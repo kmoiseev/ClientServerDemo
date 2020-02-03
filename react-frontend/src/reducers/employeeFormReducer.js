@@ -1,12 +1,8 @@
-import {
-  EMPLOYEE_FORM_CLEAR,
-  EMPLOYEE_FORM_UPDATE_NAME,
-  EMPLOYEE_FORM_UPDATE_SALARY
-} from "../actions/types/EmployeeFormActionTypes";
+import {EMPLOYEE_FORM_CLEAR, EMPLOYEE_FORM_UPDATE_NAME, EMPLOYEE_FORM_UPDATE_SALARY} from "../actions/types/EmployeeFormActionTypes";
 
 const initialSate = {
     name: "",
-    salary: "",
+    salary: 0,
 };
 
 const employeeFormReducer = (state = initialSate, action) => {
@@ -16,13 +12,13 @@ const employeeFormReducer = (state = initialSate, action) => {
                 ...state,
                 name: action.value
             };
-      case EMPLOYEE_FORM_UPDATE_SALARY:
-        return {
-          ...state,
-          salary: action.value
-        };
-      case EMPLOYEE_FORM_CLEAR:
-        return initialSate;
+        case EMPLOYEE_FORM_UPDATE_SALARY:
+            return {
+                ...state,
+                salary: action.value
+            };
+        case EMPLOYEE_FORM_CLEAR:
+            return initialSate;
         default:
             return state;
     }
