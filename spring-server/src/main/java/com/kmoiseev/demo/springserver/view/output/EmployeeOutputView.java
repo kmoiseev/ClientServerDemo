@@ -10,7 +10,7 @@ import lombok.Getter;
 public class EmployeeOutputView {
     private final Integer id;
     private final String name;
-    private final Integer salary;
+    private final Long salary;
 
     public static EmployeeOutputView of(Employee employee) {
         return new EmployeeOutputView(

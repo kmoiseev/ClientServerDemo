@@ -25,9 +25,10 @@
                         nullable="false"
                         foreignKeyName="fk_salary_employee"
                         references="employee(id)"
+                        unique="true"
                 />
             </column>
-            <column name="salary" type="BIGINT" >
+            <column name="amount" type="BIGINT" >
                 <constraints nullable="false" />
             </column>
         </createTable>

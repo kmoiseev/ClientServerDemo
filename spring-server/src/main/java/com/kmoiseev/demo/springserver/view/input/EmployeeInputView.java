@@ -8,5 +8,5 @@ import lombok.Getter;
 @Getter
 public class EmployeeInputView {
     private final String name;
-    private final Integer salary;
+    private final Long salary;
 }

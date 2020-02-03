@@ -1,5 +1,17 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/clientserverdemo
+    url: jdbc:mysql://localhost:3306/clientserverdemo?createDatabaseIfNotExist=true&serverTimezone=Europe/Moscow
     username: root
-    password: root
+    password: ip1k5PNCgjHbmK
+
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+
+  security:
+    user:
+      name: USER
+      password: USER
+      roles: USER
+
+server:
+  port: 12121
