@@ -5,8 +5,13 @@ const initialState = [];
 const employeeListReducer = (state = initialState, action) => {
     switch (action.type) {
         case EMPLOYEE_LIST_UPDATE_ALL:
-            console.log(action.value);
-            return action.value;
+            return action.value.map(
+                employee =>
+                    ({
+                    ...employee,
+                    salary: employee.salary.toString(),
+                })
+            );
         case EMPLOYEE_LIST_UPDATE_SINGLE_SALARY:
             return state.map(
                 employee =>

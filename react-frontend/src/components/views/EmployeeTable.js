@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Table, TableCell, TableContainer, TableHead, TableRow, TextField, TableBody} from "@material-ui/core";
+import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import EmployeeNameField from "./EmployeeNameField";
 import EmployeeSalaryInput from "./EmployeeSalaryInput";
 
@@ -22,7 +22,7 @@ const EmployeeTable = (props) => (
 );
 
 const renderEmployee = (props, employee) => (
-    <TableRow>
+    <TableRow key={employee.id}>
         <TableCell>
             <EmployeeNameField
                 value={employee.name}
@@ -32,12 +32,15 @@ const renderEmployee = (props, employee) => (
             <EmployeeSalaryInput
                 value={employee.salary}
                 onChange={value => props.handleSalaryChangeForEmployee(employee.id, value)}
-                showValidationError={true}
+                onInvalid={() => props.markSalaryInvalid(employee.id)}
+                onValid={() => props.markSalaryValid(employee.id)}
+                isInvalid={props.isSalaryInvalid(employee.id)}
             />
         </TableCell>
         <TableCell>
             <Button
                 onClick={() => props.handleButtonClickForEmployee(employee.id, employee.salary)}
+                disabled={props.isUpdateButtonDisabled(employee.id)}
             >
                 {props.buttonText}
             </Button>
@@ -50,11 +53,17 @@ EmployeeTable.propTypes = {
         PropTypes.shape({
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
-            salary: PropTypes.number.isRequired,
+            salary: PropTypes.string.isRequired,
         })
     ),
+    isUpdateButtonDisabled: PropTypes.func.isRequired,
+
     handleButtonClickForEmployee: PropTypes.func.isRequired,
     handleSalaryChangeForEmployee: PropTypes.func.isRequired,
+
+    markSalaryInvalid: PropTypes.func.isRequired,
+    markSalaryValid: PropTypes.func.isRequired,
+    isSalaryInvalid: PropTypes.func.isRequired,
 };
 
 export default EmployeeTable;

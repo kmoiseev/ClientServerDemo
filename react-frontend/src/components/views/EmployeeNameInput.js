@@ -8,19 +8,32 @@ const validateInput = (input) => {
     }
 };
 
+const proxyChange = (input, props) => {
+    if (validateInput(input)) {
+        props.onInvalid();
+    } else {
+        props.onValid();
+    }
+    props.onChange(input);
+};
+
 const EmployeeNameInput = (props) => (
     <TextField
+        label={props.label}
         value={props.value}
-        onChange={event => props.onChange(event.target.value)}
-        error={props.showValidationError && validateInput(Number(props.value))}
-        helperText={props.showValidationError && validateInput(Number(props.value))}
+        onChange={event => proxyChange(event.target.value, props)}
+        error={props.isInvalid}
+        helperText={props.isInvalid && validateInput(props.value)}
     />
 );
 
 EmployeeNameInput.propTypes = {
+    label: PropTypes.string,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    showValidationError: PropTypes.bool.isRequired,
+    onValid: PropTypes.func.isRequired,
+    onInvalid: PropTypes.func.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
 };
 
 export default EmployeeNameInput;

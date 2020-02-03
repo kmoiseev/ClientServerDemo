@@ -2,7 +2,7 @@ import {EMPLOYEE_FORM_CLEAR, EMPLOYEE_FORM_UPDATE_NAME, EMPLOYEE_FORM_UPDATE_SAL
 
 const initialSate = {
     name: "",
-    salary: 0,
+    salary: "",
 };
 
 const employeeFormReducer = (state = initialSate, action) => {

@@ -7,17 +7,24 @@ import EmployeeSalaryInput from "./EmployeeSalaryInput";
 const EmployeeForm = (props) => (
     <Container>
         <EmployeeNameInput
+            label={props.nameInputLabel}
             value={props.name}
             onChange={value => props.handleNameChange(value)}
-            showValidationError
+            onInvalid={props.markNameInvalid}
+            onValid={props.markNameValid}
+            isInvalid={props.isNameInvalid}
         />
         <EmployeeSalaryInput
+            label={props.salaryInputLabel}
             value={props.salary}
             onChange={value => props.handleSalaryChange(value)}
-            showValidationError
+            onInvalid={props.markSalaryInvalid}
+            onValid={props.markSalaryValid}
+            isInvalid={props.isSalaryInvalid}
         />
         <Button
             onClick={() => props.handleButtonClick(props.name, props.salary)}
+            disabled={props.isButtonDisabled}
         >
             {props.buttonText}
         </Button>
@@ -26,11 +33,23 @@ const EmployeeForm = (props) => (
 
 EmployeeForm.propTypes = {
     name: PropTypes.string.isRequired,
-    salary: PropTypes.number.isRequired,
+    salary: PropTypes.string.isRequired,
     buttonText: PropTypes.string.isRequired,
+    nameInputLabel: PropTypes.string.isRequired,
+    salaryInputLabel: PropTypes.string.isRequired,
+    isButtonDisabled: PropTypes.bool.isRequired,
+
     handleNameChange: PropTypes.func.isRequired,
     handleSalaryChange: PropTypes.func.isRequired,
     handleButtonClick: PropTypes.func.isRequired,
+
+    markNameValid: PropTypes.func.isRequired,
+    markNameInvalid: PropTypes.func.isRequired,
+    isNameInvalid: PropTypes.bool.isRequired,
+
+    markSalaryValid: PropTypes.func.isRequired,
+    markSalaryInvalid: PropTypes.func.isRequired,
+    isSalaryInvalid: PropTypes.bool.isRequired,
 };
 
 export default EmployeeForm;
