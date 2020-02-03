@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Button, Table, TableCell, TableContainer, TableHead, TableRow, TextField, TableBody} from "@material-ui/core";
+import EmployeeNameField from "./EmployeeNameField";
+import EmployeeSalaryInput from "./EmployeeSalaryInput";
 
 const EmployeeTable = (props) => (
     <TableContainer>
@@ -21,11 +23,16 @@ const EmployeeTable = (props) => (
 
 const renderEmployee = (props, employee) => (
     <TableRow>
-        <TableCell>{employee.name}</TableCell>
         <TableCell>
-            <TextField
+            <EmployeeNameField
+                value={employee.name}
+            />
+        </TableCell>
+        <TableCell>
+            <EmployeeSalaryInput
                 value={employee.salary}
-                onChange={event => props.handleSalaryChangeForEmployee(employee.id, event.target.value)}
+                onChange={value => props.handleSalaryChangeForEmployee(employee.id, value)}
+                showValidationError={true}
             />
         </TableCell>
         <TableCell>

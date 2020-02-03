@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Container, TextField} from '@material-ui/core';
+import {Button, Container} from '@material-ui/core';
+import EmployeeNameInput from "./EmployeeNameInput";
+import EmployeeSalaryInput from "./EmployeeSalaryInput";
 
 const EmployeeForm = (props) => (
     <Container>
-        <TextField
+        <EmployeeNameInput
             value={props.name}
-            onChange={event => props.handleNameChange(event.target.value)}
+            onChange={value => props.handleNameChange(value)}
+            showValidationError
         />
-        <TextField
+        <EmployeeSalaryInput
             value={props.salary}
-            onChange={event => props.handleSalaryChange(event.target.value)}
+            onChange={value => props.handleSalaryChange(value)}
+            showValidationError
         />
         <Button
             onClick={() => props.handleButtonClick(props.name, props.salary)}
