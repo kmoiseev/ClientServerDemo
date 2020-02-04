@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface EmployeeService {
     Employee create(Employee employee);
-    Employee update(Integer id, String name, Long salary);
+    Employee updateSalary(Integer id, Long salary);
     Iterable<Employee> getAll();
     void deleteAll();
 }

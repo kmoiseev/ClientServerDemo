@@ -25,13 +25,10 @@ export function createEmployeeApi(name, salary) {
     );
 }
 
-export function updateEmployeeSalaryApi(id, salary) {
+export function updateEmployeeSalaryApi(employeeId, salary) {
     return fetchWithDefaults(
-        urlPrefix + "update/" + id,
-        'PATCH',
-        JSON.stringify({
-            salary
-        }),
+        `${urlPrefix}update/${employeeId}/salary/${salary}`,
+        'PATCH'
     );
 }
 

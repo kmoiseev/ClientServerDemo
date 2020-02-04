@@ -15,11 +15,6 @@ const validationReducer = (state = initialState, action) => {
                 ...state,
                 [action.value]: false,
             };
-        case CLEAR_VALIDATION_STATE:
-            return {
-                ...state,
-                [action.value]: undefined,
-            };
         default:
             return state;
     }

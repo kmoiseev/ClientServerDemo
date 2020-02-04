@@ -2,12 +2,22 @@ import React from "react";
 import PropTypes from 'prop-types';
 import {TextField} from "@material-ui/core";
 
+const regExpPositiveNumber = /^[0-9]*\.?[0-9]*$/;
+const regExpPositiveNumberWithTwoDecimals = /^\d+\.?\d{0,2}$/;
+const maximumNumber = 9999999999999.99;
+
 const validateInput = (input) => {
     if (!input) {
         return "Cannot be empty";
     }
-    if (!/^\d+\.?\d{0,2}$/.test(input)) {
-        return "Must be a positive number with up to two decimal places"
+    if (!regExpPositiveNumber.test(input)) {
+        return "Must be positive number";
+    }
+    if (!regExpPositiveNumberWithTwoDecimals.test(input)) {
+        return "Up to two decimal places allowed"
+    }
+    if (Number(input) > maximumNumber) {
+        return "Cannot exceed " + maximumNumber;
     }
 };
 

@@ -6,6 +6,7 @@ import {createEmployee} from "../../actions/composite/EmployeeCompositeApiAction
 import {isInvalid} from "../../selectors/ValidationSelector";
 import {getKeyForEmployeeFormName, getKeyForEmployeeFormSalary} from "../../static/ValidationKeyBuilder";
 import {markInvalid, markValid} from "../../actions/ValidationActions";
+import {isApiInProgress} from "../../selectors/ApiIndicationSelector";
 
 const mapStateToProps = (state) => ({
     name: getEmployeeFormName(state),
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => ({
     isNameInvalid: isInvalid(state, getKeyForEmployeeFormName()),
     isSalaryInvalid: isInvalid(state, getKeyForEmployeeFormSalary()),
     isButtonDisabled:
+        isApiInProgress(state) ||
         isInvalid(state, getKeyForEmployeeFormName()) ||
         isInvalid(state, getKeyForEmployeeFormSalary()) ||
         !getEmployeeFormName(state).length ||

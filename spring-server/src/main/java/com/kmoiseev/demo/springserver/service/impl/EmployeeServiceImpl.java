@@ -9,8 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,7 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee update(Integer id, String name, Long salary) {
+    public Employee updateSalary(Integer id, Long salary) {
         Employee employee = repository.findById(id)
                 .orElseThrow(() ->
                         new ModelNotFoundException(
@@ -31,15 +29,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                         )
                 );
 
-        if (Objects.nonNull(name)) {
-            employee = employee.withName(name);
-        }
-
-        if (Objects.nonNull(salary)) {
-            employee = employee.withSalary(EmployeeSalary.of(salary));
-        }
-
-        return repository.save(employee);
+        return repository.save(
+                employee.withSalary(
+                        EmployeeSalary.of(salary)
+                )
+        );
     }
 
     @Override

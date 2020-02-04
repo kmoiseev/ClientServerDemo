@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-import {CircularProgress, Container} from "@material-ui/core";
+import {Container} from "@material-ui/core";
 import EmployeeFormContainer from "./components/containers/EmployeeFormContainer";
 import EmployeeTableContainer from "./components/containers/EmployeeTableContainer";
 import ApiIndicatorContainer from "./components/containers/ApiIndicatorContainer";
+import RemoveEmployeesButtonContainer from "./components/containers/RemoveEmployeesButtonContainer";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
             <ApiIndicatorContainer />
             <EmployeeFormContainer/>
             <EmployeeTableContainer/>
+            <RemoveEmployeesButtonContainer />
         </Container>
     );
 }
