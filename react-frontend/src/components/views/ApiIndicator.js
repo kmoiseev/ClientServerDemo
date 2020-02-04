@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import {CircularProgress, Container} from "@material-ui/core";
-import {green, red} from "@material-ui/core/colors";
 
 const ApiIndicator = props => (
     <Container>
