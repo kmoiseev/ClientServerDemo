@@ -8,13 +8,16 @@ group = 'com.kmoiseev.demo'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '8'
 
-configurations {
-    developmentOnly
-    runtimeClasspath {
-        extendsFrom developmentOnly
-    }
-    compileOnly {
-        extendsFrom annotationProcessor
+sourceSets {
+    testIntegration {
+        java {
+            srcDir 'src/test-integration/java'
+            compileClasspath += sourceSets.main.output
+            runtimeClasspath += sourceSets.main.output
+        }
+        resources {
+            srcDir 'src/test-integration/resources'
+        }
     }
 }
 
@@ -22,25 +25,55 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testIntegrationImplementation.extendsFrom implementation
+    testIntegrationImplementation.extendsFrom runtimeOnly
+}
+
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.liquibase:liquibase-core'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation (
+            'org.springframework.boot:spring-boot-starter-data-jdbc',
+            'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.liquibase:liquibase-core',
+            'org.projectlombok:lombok'
+    )
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation 'org.projectlombok:lombok'
-    testCompileOnly 'org.projectlombok:lombok'
+    testImplementation(
+            'org.springframework.boot:spring-boot-starter-test',
+            'org.projectlombok:lombok'
+    )
     testAnnotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    testImplementation 'org.springframework.security:spring-security-test'
+
+    testIntegrationImplementation(
+            'org.springframework.boot:spring-boot-starter-test',
+            'org.springframework.security:spring-security-test',
+            'org.projectlombok:lombok',
+            'com.fasterxml.jackson.core:jackson-databind'
+    )
+    testIntegrationCompile 'com.h2database:h2'
+    testIntegrationAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 test {
     useJUnitPlatform()
+
+    outputs.upToDateWhen {false}
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task integrationTest(type: Test) {
+    useJUnitPlatform()
+
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.testIntegration.output.classesDirs
+    classpath = sourceSets.testIntegration.runtimeClasspath
+    shouldRunAfter test
 }
