@@ -1,11 +1,14 @@
 package com.kmoiseev.demo.springserver.view.output;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor(access = AccessLevel.PUBLIC, staticName = "of")
+@Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ErrorView {
-    private final String error;
+    private String error;
 }

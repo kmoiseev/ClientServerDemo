@@ -6,6 +6,7 @@ import com.kmoiseev.demo.springserver.model.EmployeeTestCreator;
 import com.kmoiseev.demo.springserver.service.EmployeeService;
 import com.kmoiseev.demo.springserver.service.EmployeeServiceTest;
 import com.kmoiseev.demo.springserver.service.EmployeeServiceMocker;
+import com.kmoiseev.demo.springserver.view.EmployeeOutputViewTestValidator;
 import com.kmoiseev.demo.springserver.view.input.EmployeeInputView;
 import com.kmoiseev.demo.springserver.view.output.EmployeeOutputView;
 import lombok.AccessLevel;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.kmoiseev.demo.springserver.view.EmployeeOutputViewTestValidator.assertEmployeeViewIsCorrect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -38,7 +40,6 @@ public class EmployeeControllerTest {
         EmployeeService employeeService = mock(EmployeeService.class);
 
         employeeServiceMocker = new EmployeeServiceMocker(employeeService);
-
         controller = new EmployeeController(employeeService);
     }
 
@@ -51,8 +52,7 @@ public class EmployeeControllerTest {
 
         EmployeeOutputView outputView = controller.create(inputView);
 
-        assertEquals(inputView.getName(), outputView.getName(), "Output employee name is not equal to input");
-        assertEquals(inputView.getSalary(), outputView.getSalary(), "Output employee salary is not equal to input");
+        assertEmployeeViewIsCorrect(outputView, name, salary);
     }
 
     private static Stream<EmployeeInputView> prepareModelValidationErrorEmployees() {
@@ -77,12 +77,12 @@ public class EmployeeControllerTest {
     void updatedEmployeeCorrectlyMapped() {
         Integer employeeId = 21441;
         Long salary = 219921L;
-        employeeServiceMocker.mockUpdatePassThroughIdAndSalaryWithName("someName");
+        String name = "someName";
+        employeeServiceMocker.mockUpdatePassThroughIdAndSalaryWithName(name);
 
         EmployeeOutputView outputView = controller.updateEmployeeSalary(employeeId, salary);
 
-        assertEquals(employeeId, outputView.getId(), "Output employee id is not equal to input");
-        assertEquals(salary, outputView.getSalary(), "Output employee salary is not equal to input");
+        assertEmployeeViewIsCorrect(outputView, employeeId, name, salary);
     }
 
     @Test
@@ -98,9 +98,7 @@ public class EmployeeControllerTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionFailedError("Single employee must present"));
 
-        assertEquals(employeeId, outputView.getId(), "Output employee id is not equal to input");
-        assertEquals(name, outputView.getName(), "Output employee name is not equal to input");
-        assertEquals(salary, outputView.getSalary(), "Output employee salary is not equal to input");
+        assertEmployeeViewIsCorrect(outputView, employeeId, name, salary);
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)

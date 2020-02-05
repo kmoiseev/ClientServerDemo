@@ -14,6 +14,8 @@ sourceSets {
             srcDir 'src/test-integration/java'
             compileClasspath += sourceSets.main.output
             runtimeClasspath += sourceSets.main.output
+            compileClasspath += sourceSets.test.output
+            runtimeClasspath += sourceSets.test.output
         }
         resources {
             srcDir 'src/test-integration/resources'
@@ -50,8 +52,7 @@ dependencies {
     testIntegrationImplementation(
             'org.springframework.boot:spring-boot-starter-test',
             'org.springframework.security:spring-security-test',
-            'org.projectlombok:lombok',
-            'com.fasterxml.jackson.core:jackson-databind'
+            'org.projectlombok:lombok'
     )
     testIntegrationCompile 'com.h2database:h2'
     testIntegrationAnnotationProcessor 'org.projectlombok:lombok'

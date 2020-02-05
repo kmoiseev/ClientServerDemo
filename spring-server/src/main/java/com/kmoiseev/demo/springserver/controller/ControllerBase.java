@@ -11,12 +11,12 @@ public abstract class ControllerBase {
     @ExceptionHandler(value = ModelValidationException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorView handleModelValidationException(ModelValidationException e) {
-        return ErrorView.of(e.getMessage());
+        return new ErrorView(e.getMessage());
     }
 
     @ExceptionHandler(value = ModelNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorView handleModelNotFoundException(ModelNotFoundException e) {
-        return ErrorView.of(e.getMessage());
+        return new ErrorView(e.getMessage());
     }
 }

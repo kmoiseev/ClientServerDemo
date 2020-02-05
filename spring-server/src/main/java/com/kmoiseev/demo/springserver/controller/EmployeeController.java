@@ -28,7 +28,7 @@ import java.util.stream.StreamSupport;
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class EmployeeController {
+public class EmployeeController extends ControllerBase {
 
     private final EmployeeService service;
 

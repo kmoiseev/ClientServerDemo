@@ -14,10 +14,10 @@ public class EmployeeSalary {
 
     public static EmployeeSalary of(Long salary) {
         if (Objects.isNull(salary)) {
-            throw new ModelValidationException("Salary amount cannot be null");
+            throw new ModelValidationException("Salary cannot be null");
         }
         if (salary < 0) {
-            throw new ModelValidationException("Salary amount cannot be negative");
+            throw new ModelValidationException("Salary cannot be negative");
         }
         return new EmployeeSalary(salary);
     }

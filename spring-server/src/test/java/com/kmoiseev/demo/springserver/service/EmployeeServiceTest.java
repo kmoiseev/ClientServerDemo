@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.kmoiseev.demo.springserver.model.EmployeeTestValidator.assertEmployeeIsCorrect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -38,9 +39,7 @@ public class EmployeeServiceTest {
 
         Employee employeeCreated = service.create(employee);
 
-        assertEquals(employee.getId(), employeeCreated.getId(), "Output employee id is not equal to input");
-        assertEquals(employee.getName(), employeeCreated.getName(), "Output employee name is not equal to input");
-        assertEquals(employee.getSalary().getAmount(), employeeCreated.getSalary().getAmount(), "Output employee salary is not equal to input");
+        assertEmployeeIsCorrect(employeeCreated, employee.getId(), employee.getName(), employee.getSalary().getAmount());
     }
 
     @Test
@@ -83,9 +82,7 @@ public class EmployeeServiceTest {
 
         Employee employeeSaved = repositoryMocker.captureOnceSavedEmployee();
 
-        assertEquals(id, employeeSaved.getId(), "Saved employee id is not correct");
-        assertEquals(name, employeeSaved.getName(), "Saved employee name is not correct");
-        assertEquals(salaryNew, employeeSaved.getSalary().getAmount(), "Saved employee salary is not correct");
+        assertEmployeeIsCorrect(employeeSaved, id, name, salaryNew);
     }
 
     @Test
@@ -99,9 +96,7 @@ public class EmployeeServiceTest {
 
         Employee employeeReturned = service.updateSalary(id, salaryNew);
 
-        assertEquals(id, employeeReturned.getId(), "Returned employee id is not correct");
-        assertEquals(name, employeeReturned.getName(), "Returned employee name is not correct");
-        assertEquals(salaryNew, employeeReturned.getSalary().getAmount(), "Returned employee salary is not correct");
+        assertEmployeeIsCorrect(employeeReturned, id, name, salaryNew);
     }
 
     @Test
