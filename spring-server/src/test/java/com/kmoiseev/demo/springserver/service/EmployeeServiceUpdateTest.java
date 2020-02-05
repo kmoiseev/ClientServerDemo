@@ -4,10 +4,6 @@ import com.kmoiseev.demo.springserver.exception.ModelNotFoundException;
 import com.kmoiseev.demo.springserver.exception.ModelValidationException;
 import com.kmoiseev.demo.springserver.model.Employee;
 import com.kmoiseev.demo.springserver.model.EmployeeTestCreator;
-import com.kmoiseev.demo.springserver.repository.EmployeeRepository;
-import com.kmoiseev.demo.springserver.repository.EmployeeRepositoryMocker;
-import com.kmoiseev.demo.springserver.service.impl.EmployeeServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -16,40 +12,8 @@ import java.util.List;
 import static com.kmoiseev.demo.springserver.model.EmployeeTestValidator.assertEmployeeIsCorrect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 
-public class EmployeeServiceTest {
-
-    private EmployeeService service;
-    private EmployeeRepositoryMocker repositoryMocker;
-
-    @BeforeEach
-    void initializeControllerWithMocks() {
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-
-        repositoryMocker = new EmployeeRepositoryMocker(employeeRepository);
-
-        service = new EmployeeServiceImpl(employeeRepository);
-    }
-
-    @Test
-    void saveEmployeeKeepsEmployeeUnmodified() {
-        Employee employee = EmployeeTestCreator.create(212, "Jacob", 76581L);
-        repositoryMocker.mockSavePassThroughEmployee();
-
-        Employee employeeCreated = service.create(employee);
-
-        assertEmployeeIsCorrect(employeeCreated, employee.getId(), employee.getName(), employee.getSalary().getAmount());
-    }
-
-    @Test
-    void saveRepositoryMethodGetsCalled() {
-        Employee employee = EmployeeTestCreator.create(212, "Jacob", 76581L);
-
-        service.create(employee);
-
-        repositoryMocker.verifySaveCalledOnceWith(employee);
-    }
+public class EmployeeServiceUpdateTest extends EmployeeServiceTestBase {
 
     @Test
     void updateEmployeeThrowsModelNotFound() {
@@ -99,23 +63,4 @@ public class EmployeeServiceTest {
         assertEmployeeIsCorrect(employeeReturned, id, name, salaryNew);
     }
 
-    @Test
-    void getAllReturnsRepositoryResultUnmodified() {
-        List<Employee> employees = Arrays.asList(
-                EmployeeTestCreator.create(21, "Semen", 212L),
-                EmployeeTestCreator.create(12, "Gary", 4114141L)
-        );
-        repositoryMocker.mockGetAllReturns(employees);
-
-        Iterable<Employee> employeesReturned = service.getAll();
-
-        assertEquals(employees, employeesReturned, "getAll expected to forward iterable from repo");
-    }
-
-    @Test
-    void deleteAllRepositoryMethodGetsCalledOnce() {
-        service.deleteAll();
-
-        repositoryMocker.verifyDeleteAllCalledOnce();
-    }
 }

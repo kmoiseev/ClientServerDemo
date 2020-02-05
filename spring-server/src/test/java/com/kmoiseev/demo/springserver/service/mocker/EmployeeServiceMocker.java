@@ -1,7 +1,8 @@
-package com.kmoiseev.demo.springserver.service;
+package com.kmoiseev.demo.springserver.service.mocker;
 
 import com.kmoiseev.demo.springserver.model.Employee;
 import com.kmoiseev.demo.springserver.model.EmployeeTestCreator;
+import com.kmoiseev.demo.springserver.service.EmployeeService;
 import lombok.AllArgsConstructor;
 
 import static org.mockito.ArgumentMatchers.any;

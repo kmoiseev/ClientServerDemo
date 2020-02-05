@@ -1,18 +1,11 @@
 package com.kmoiseev.demo.springserver.controller;
 
-import com.kmoiseev.demo.springserver.exception.ModelValidationException;
 import com.kmoiseev.demo.springserver.model.Employee;
 import com.kmoiseev.demo.springserver.model.EmployeeTestCreator;
-import com.kmoiseev.demo.springserver.service.EmployeeService;
-import com.kmoiseev.demo.springserver.service.EmployeeServiceTest;
-import com.kmoiseev.demo.springserver.service.EmployeeServiceMocker;
-import com.kmoiseev.demo.springserver.view.EmployeeOutputViewTestValidator;
-import com.kmoiseev.demo.springserver.view.input.EmployeeInputView;
 import com.kmoiseev.demo.springserver.view.output.EmployeeOutputView;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,64 +19,8 @@ import java.util.stream.Stream;
 
 import static com.kmoiseev.demo.springserver.view.EmployeeOutputViewTestValidator.assertEmployeeViewIsCorrect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
-public class EmployeeControllerTest {
-
-    private EmployeeController controller;
-    private EmployeeServiceMocker employeeServiceMocker;
-
-    @BeforeEach
-    void initializeControllerWithMocks() {
-        EmployeeService employeeService = mock(EmployeeService.class);
-
-        employeeServiceMocker = new EmployeeServiceMocker(employeeService);
-        controller = new EmployeeController(employeeService);
-    }
-
-    @Test
-    void createdEmployeeCorrectlyMapped() {
-        String name = "someName";
-        Long salary = 2771L;
-        EmployeeInputView inputView = new EmployeeInputView(name, salary);
-        employeeServiceMocker.mockCreatePassThroughEmployee();
-
-        EmployeeOutputView outputView = controller.create(inputView);
-
-        assertEmployeeViewIsCorrect(outputView, name, salary);
-    }
-
-    private static Stream<EmployeeInputView> prepareModelValidationErrorEmployees() {
-        return Stream.of(
-                new EmployeeInputView("", 213L),
-                new EmployeeInputView(null, 213L),
-                new EmployeeInputView("validName", null),
-                new EmployeeInputView("validName", -213L),
-                new EmployeeInputView(null, null)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("prepareModelValidationErrorEmployees")
-    void modelValidationErrorCreatingEmployee(EmployeeInputView inputView) {
-        employeeServiceMocker.mockCreatePassThroughEmployee();
-
-        assertThrows(ModelValidationException.class, () -> controller.create(inputView));
-    }
-
-    @Test
-    void updatedEmployeeCorrectlyMapped() {
-        Integer employeeId = 21441;
-        Long salary = 219921L;
-        String name = "someName";
-        employeeServiceMocker.mockUpdatePassThroughIdAndSalaryWithName(name);
-
-        EmployeeOutputView outputView = controller.updateEmployeeSalary(employeeId, salary);
-
-        assertEmployeeViewIsCorrect(outputView, employeeId, name, salary);
-    }
+public class EmployeeControllerGetAllTest extends EmployeeControllerTestBase {
 
     @Test
     void getAllEmployeesCorrectlyMapped() {
@@ -163,10 +100,4 @@ public class EmployeeControllerTest {
         }
     }
 
-    @Test
-    void deleteAllServiceMethodGetsCalled() {
-        controller.deleteAll();
-
-        employeeServiceMocker.verifyDeleteAllCalledOnce();
-    }
 }

@@ -42,7 +42,9 @@ public class EmployeeController extends ControllerBase {
     ) {
         return EmployeeOutputView.of(
                 service.create(
-                        Employee.of(employeeInputView)
+                        Employee.of(
+                                employeeInputView
+                        )
                 )
         );
     }
@@ -55,7 +57,10 @@ public class EmployeeController extends ControllerBase {
             @PathVariable("salary") Long salary
     ) {
         return EmployeeOutputView.of(
-                service.updateSalary(employeeId, salary)
+                service.updateSalary(
+                        employeeId,
+                        salary
+                )
         );
     }
 

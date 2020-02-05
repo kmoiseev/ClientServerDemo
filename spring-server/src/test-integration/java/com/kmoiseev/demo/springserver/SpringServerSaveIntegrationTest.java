@@ -8,18 +8,14 @@ import com.kmoiseev.demo.springserver.view.output.EmployeeOutputView;
 import com.kmoiseev.demo.springserver.view.output.ErrorView;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,44 +27,18 @@ import static com.kmoiseev.demo.springserver.model.EmployeeTestValidator.assertE
 import static com.kmoiseev.demo.springserver.view.EmployeeOutputViewTestValidator.assertEmployeeViewIsCorrect;
 import static com.kmoiseev.demo.springserver.view.ErrorViewTestValidator.assertErrorViewIsCorrect;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-public class SpringServerIntegrationTests {
 
-    private final EmployeeRepositoryTestWrapper repositoryTestWrapper;
-    private TestRestTemplate testRestTemplate;
+public class SpringServerSaveIntegrationTest extends SpringServerIntegrationTestBase {
 
     @Autowired
-    public SpringServerIntegrationTests(
+    public SpringServerSaveIntegrationTest(
             EmployeeRepository employeeRepository,
             TestRestTemplate testRestTemplate
     ) {
-        this.repositoryTestWrapper = new EmployeeRepositoryTestWrapper(employeeRepository);
-        this.testRestTemplate = testRestTemplate;
-
-        // Default RestTemplate requestFactory does not support PATCH
-        // Using apache Http request factory
-        RestTemplate restTemplate = testRestTemplate.getRestTemplate();
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
-    }
-
-    @LocalServerPort
-    private int port;
-
-    private String getBaseUrl() {
-        return "http://localhost:" + port + "/";
-    }
-
-    @BeforeEach
-    void cleanUpDb() {
-        repositoryTestWrapper.clean();
-    }
-
-    private TestRestTemplate restTemplateWithTestAuth() {
-        return testRestTemplate.withBasicAuth("TEST", "TEST");
+        super(employeeRepository, testRestTemplate);
     }
 
     @Test
@@ -167,47 +137,4 @@ public class SpringServerIntegrationTests {
         repositoryTestWrapper.assertRepoIsEmpty();
     }
 
-    @Test
-    void testUpdateEmployeeSuccess() {
-        String name = "Vlad Testov";
-        Long salary = 26661L;
-        Integer id = repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salary));
-
-        ResponseEntity<EmployeeOutputView> response = restTemplateWithTestAuth()
-                .exchange(
-                        getBaseUrl() + "employee/update/" + id + "/salary/" + salary,
-                        HttpMethod.PATCH,
-                        null,
-                        EmployeeOutputView.class
-                );
-
-        assertStatusCodeEquals(response, HttpStatus.OK);
-        assertResponseBodyIsNotEmpty(response);
-        assertEmployeeViewIsCorrect(response.getBody(), name, salary);
-
-        Employee savedEmployee = repositoryTestWrapper.getEmployeeOrThrow(id);
-        assertEmployeeIsCorrect(savedEmployee, name, salary);
-    }
-
-    @Test
-    void testUpdateEmployeeReturnsSalaryCannotBeNegative() {
-        String name = "George";
-        Long salaryOld = 245L;
-        Long salaryNew = -23L;
-        Integer id = repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salaryOld));
-
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .exchange(
-                        getBaseUrl() + "employee/update/" + id + "/salary/" + salaryNew,
-                        HttpMethod.PATCH,
-                        null,
-                        ErrorView.class
-                );
-
-        assertStatusCodeEquals(response, BAD_REQUEST);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Salary cannot be negative");
-
-        repositoryTestWrapper.assertRepoIsEmpty();
-    }
 }

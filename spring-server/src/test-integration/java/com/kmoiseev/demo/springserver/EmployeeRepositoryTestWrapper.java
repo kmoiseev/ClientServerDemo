@@ -30,8 +30,8 @@ public class EmployeeRepositoryTestWrapper {
         assertEquals(0, getAll().count(), "Expected no employees present in repository");
     }
 
-    Integer persistEmployee(Employee employee) {
-        return repository.save(employee).getId();
+    Employee persistEmployee(Employee employee) {
+        return repository.save(employee);
     }
 
     Employee getEmployeeOrThrow(Integer id) {
