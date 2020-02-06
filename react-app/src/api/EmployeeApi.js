@@ -1,7 +1,9 @@
-const urlPrefix = "http://localhost:12121/employee/";
+import {SECURITY_PWD, SECURITY_UNAME, SERVER_PORT} from "./ApiEnvironment";
+
+const urlPrefix = `http://localhost:${SERVER_PORT}/employee/`;
 
 function fetchWithDefaults(url, method, body) {
-    const authString = 'Basic ' + btoa('USER:USER');
+    const authString = 'Basic ' + btoa(`${SECURITY_UNAME}:${SECURITY_PWD}`);
     return fetch(url, {
         method,
         headers: {

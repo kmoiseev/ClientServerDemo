@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {Container} from "@material-ui/core";
 import EmployeeFormContainer from "./components/containers/EmployeeFormContainer";
 import EmployeeTableContainer from "./components/containers/EmployeeTableContainer";

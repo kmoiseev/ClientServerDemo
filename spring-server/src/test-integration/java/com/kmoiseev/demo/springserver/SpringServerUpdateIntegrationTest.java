@@ -70,6 +70,8 @@ public class SpringServerUpdateIntegrationTest extends SpringServerIntegrationTe
         assertStatusCodeEquals(response, BAD_REQUEST);
         assertResponseBodyIsNotEmpty(response);
         assertErrorViewIsCorrect(response.getBody(), "Salary cannot be negative");
+        Employee employee = repositoryTestWrapper.getEmployeeOrThrow(id);
+        assertEmployeeIsCorrect(employee, name, salaryOld);
     }
 
     @Test

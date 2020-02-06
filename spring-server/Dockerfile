@@ -5,7 +5,7 @@ RUN gradle build --no-daemon
 
 FROM openjdk:8-jre-slim
 
-EXPOSE ${SPRING_SERVER_PORT}
+EXPOSE ${SERVER_PORT}
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-server.jar
 
