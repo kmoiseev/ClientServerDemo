@@ -1,11 +1,17 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import {CircularProgress, Container} from "@material-ui/core";
+import {CircularProgress} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 
 const ApiIndicator = props => (
-    <Container>
+    <Grid
+        container
+        direction="row"
+        justify="flex-end"
+        alignItems="flex-start"
+    >
         {props.visible && render(props)}
-    </Container>
+    </Grid>
 );
 
 const render = (props) => {
@@ -19,15 +25,15 @@ const render = (props) => {
 };
 
 const renderInProgress = _ => (
-    <CircularProgress />
+    <CircularProgress/>
 );
 
 const renderSuccess = _ => (
-    <CircularProgress variant="static" value={100} style={{color: 'green'}} />
+    <CircularProgress variant="static" value={100} style={{color: 'green'}}/>
 );
 
 const renderFailure = _ => (
-    <CircularProgress variant="static" value={100} style={{color: 'red'}} />
+    <CircularProgress variant="static" value={100} style={{color: 'red'}}/>
 );
 
 ApiIndicator.propTypes = {

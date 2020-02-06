@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import {Button, Container} from '@material-ui/core';
 import EmployeeNameInput from "./EmployeeNameInput";
 import EmployeeSalaryInput from "./EmployeeSalaryInput";
+import Grid from "@material-ui/core/Grid";
 
 const EmployeeForm = (props) => (
-    <Container>
+    <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+    >
         <EmployeeNameInput
             label={props.nameInputLabel}
             value={props.name}
@@ -28,7 +34,7 @@ const EmployeeForm = (props) => (
         >
             {props.buttonText}
         </Button>
-    </Container>
+    </Grid>
 );
 
 EmployeeForm.propTypes = {
