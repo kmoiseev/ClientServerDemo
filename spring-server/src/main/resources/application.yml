@@ -1,17 +1,17 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/clientserverdemo?createDatabaseIfNotExist=true&serverTimezone=Europe/Moscow
-    username: root
-    password: ip1k5PNCgjHbmK
+    url: jdbc:mysql://localhost:3306/${SPRING_SERVER_DB_SCHEMA:clientserverdemo}?createDatabaseIfNotExist=true&serverTimezone=Europe/Moscow
+    username: ${SPRING_SERVER_DB_UNAME:root}
+    password: ${SPRING_SERVER_DB_PWD:ip1k5PNCgjHbmK}
 
   liquibase:
     change-log: classpath:db/changelog/master.xml
 
   security:
     user:
-      name: USER
-      password: USER
-      roles: USER
+      name: ${SPRING_SECURITY_UNAME:USER}
+      password: ${SPRING_SECURITY_PWD:USER}
+      roles: ${SPRING_SECURITY_ROLE:USER}
 
 server:
-  port: 12121
+  port: ${SPRING_SERVER_PORT:12121}

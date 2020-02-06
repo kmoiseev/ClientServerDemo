@@ -1,0 +1,49 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.7'
+
+services:
+  spring-server:
+    build:
+      context: ../spring-server/
+      dockerfile: Dockerfile
+    ports:
+      - "${SPRING_SERVER_PORT}:${SPRING_SERVER_PORT}"
+    restart: always
+    depends_on: 
+      - db
+    networks:
+      - backend
+      - frontend
+
+  react-app:
+    build:
+      context: ../react-app/
+      dockerfile: Dockerfile
+    ports:
+      - "${REACT_APP_PORT}:80"
+    restart: always
+    depends_on:
+      - spring-server
+    networks:
+      - frontend  
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DATABASE_SCHEMA}
+      MYSQL_USER: ${DATABASE_UNAME}
+      MYSQL_PASSWORD: ${DATABASE_PWD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PWD}
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend  
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+  frontend:    
