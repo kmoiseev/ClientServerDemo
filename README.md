@@ -34,7 +34,7 @@ Run command:
 
 Where 
 
-`-d` - means run the command as demon
+`-d` - means run the command as daemon
 
 `--build` - means rebuild images before starting. No need if sources were not updated 
  
