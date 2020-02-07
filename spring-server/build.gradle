@@ -63,12 +63,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-
-    outputs.upToDateWhen {false}
-
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
 }
 
 task integrationTest(type: Test) {
