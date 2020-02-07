@@ -16,47 +16,48 @@ import static com.kmoiseev.demo.springserver.model.EmployeeTestCreator.create;
 
 public class SpringServerGetAllIntegrationTest extends SpringServerIntegrationTestBase {
 
-    @Autowired
-    public SpringServerGetAllIntegrationTest(
-            EmployeeRepository employeeRepository,
-            TestRestTemplate testRestTemplate
-    ) {
-        super(employeeRepository, testRestTemplate);
-    }
+  @Autowired
+  public SpringServerGetAllIntegrationTest(
+      EmployeeRepository employeeRepository, TestRestTemplate testRestTemplate) {
+    super(employeeRepository, testRestTemplate);
+  }
 
-    @Test
-    void testGetAllEmployeesWithoutAuth() {
-        Employee employeeFirst = repositoryTestWrapper.persistEmployee(create("First", 10L));
-        Employee employeeSecond = repositoryTestWrapper.persistEmployee(create("Second", 20L));
-        Employee employeeThird = repositoryTestWrapper.persistEmployee(create("Third", 30L));
+  @Test
+  void testGetAllEmployeesWithoutAuth() {
+    Employee employeeFirst = repositoryTestWrapper.persistEmployee(create("First", 10L));
+    Employee employeeSecond = repositoryTestWrapper.persistEmployee(create("Second", 20L));
+    Employee employeeThird = repositoryTestWrapper.persistEmployee(create("Third", 30L));
 
-        ResponseEntity<EmployeeOutputView[]> response = testRestTemplate
-                .getForEntity(getBaseUrl() + "employee/get/all/sort/id/asc", EmployeeOutputView[].class);
+    ResponseEntity<EmployeeOutputView[]> response =
+        testRestTemplate.getForEntity(
+            getBaseUrl() + "employee/get/all/sort/id/asc", EmployeeOutputView[].class);
 
-        assertStatusCodeEquals(response, HttpStatus.OK);
-        assertResponseBodyIsNotEmpty(response);
+    assertStatusCodeEquals(response, HttpStatus.OK);
+    assertResponseBodyIsNotEmpty(response);
 
-        EmployeeOutputView[] employees = response.getBody();
-        EmployeeTestValidator.assertEmployeeIsCorrect(employeeFirst, employees[0]);
-        EmployeeTestValidator.assertEmployeeIsCorrect(employeeSecond, employees[1]);
-        EmployeeTestValidator.assertEmployeeIsCorrect(employeeThird, employees[2]);
-    }
+    EmployeeOutputView[] employees = response.getBody();
+    EmployeeTestValidator.assertEmployeeIsCorrect(employeeFirst, employees[0]);
+    EmployeeTestValidator.assertEmployeeIsCorrect(employeeSecond, employees[1]);
+    EmployeeTestValidator.assertEmployeeIsCorrect(employeeThird, employees[2]);
+  }
 
-    @Test
-    void testGetAllEmployeesWitAuth() {
-        Employee employeeFirst = repositoryTestWrapper.persistEmployee(create("First", 10L));
-        Employee employeeSecond = repositoryTestWrapper.persistEmployee(create("Second", 20L));
-        Employee employeeThird = repositoryTestWrapper.persistEmployee(create("Third", 30L));
+  @Test
+  void testGetAllEmployeesWitAuth() {
+    Employee employeeFirst = repositoryTestWrapper.persistEmployee(create("First", 10L));
+    Employee employeeSecond = repositoryTestWrapper.persistEmployee(create("Second", 20L));
+    Employee employeeThird = repositoryTestWrapper.persistEmployee(create("Third", 30L));
 
-        ResponseEntity<EmployeeOutputView[]> response = restTemplateWithTestAuth()
-                .getForEntity(getBaseUrl() + "employee/get/all/sort/id/asc", EmployeeOutputView[].class);
+    ResponseEntity<EmployeeOutputView[]> response =
+        restTemplateWithTestAuth()
+            .getForEntity(
+                getBaseUrl() + "employee/get/all/sort/id/asc", EmployeeOutputView[].class);
 
-        assertStatusCodeEquals(response, HttpStatus.OK);
-        assertResponseBodyIsNotEmpty(response);
+    assertStatusCodeEquals(response, HttpStatus.OK);
+    assertResponseBodyIsNotEmpty(response);
 
-        EmployeeOutputView[] employees = response.getBody();
-        EmployeeTestValidator.assertEmployeeIsCorrect(employeeFirst, employees[0]);
-        EmployeeTestValidator.assertEmployeeIsCorrect(employeeSecond, employees[1]);
-        EmployeeTestValidator.assertEmployeeIsCorrect(employeeThird, employees[2]);
-    }
+    EmployeeOutputView[] employees = response.getBody();
+    EmployeeTestValidator.assertEmployeeIsCorrect(employeeFirst, employees[0]);
+    EmployeeTestValidator.assertEmployeeIsCorrect(employeeSecond, employees[1]);
+    EmployeeTestValidator.assertEmployeeIsCorrect(employeeThird, employees[2]);
+  }
 }

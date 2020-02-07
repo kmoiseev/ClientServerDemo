@@ -6,23 +6,6 @@ import {
 import EmployeeNameField from './EmployeeNameField';
 import EmployeeSalaryInput from './EmployeeSalaryInput';
 
-const EmployeeTable = (props) => (
-    <TableContainer>
-        <Table>
-            <TableHead>
-                <TableRow>
-                    <TableCell><h2>Name</h2></TableCell>
-                    <TableCell><h2>Salary</h2></TableCell>
-                    <TableCell/>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {props.employees.map((employee) => renderEmployee(props, employee))}
-            </TableBody>
-        </Table>
-    </TableContainer>
-);
-
 const renderEmployee = (props, employee) => (
     <TableRow key={employee.id}>
         <TableCell>
@@ -49,6 +32,23 @@ const renderEmployee = (props, employee) => (
             </Button>
         </TableCell>
     </TableRow>
+);
+
+const EmployeeTable = (props) => (
+    <TableContainer>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell><h2>Name</h2></TableCell>
+                    <TableCell><h2>Salary</h2></TableCell>
+                    <TableCell/>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {props.employees.map((employee) => renderEmployee(props, employee))}
+            </TableBody>
+        </Table>
+    </TableContainer>
 );
 
 EmployeeTable.propTypes = {

@@ -14,34 +14,32 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EmployeeControllerSaveTest extends EmployeeControllerTestBase {
 
-    @Test
-    void createdEmployeeCorrectlyMapped() {
-        String name = "someName";
-        Long salary = 2771L;
-        EmployeeInputView inputView = new EmployeeInputView(name, salary);
-        employeeServiceMocker.mockCreatePassThroughEmployee();
+  private static Stream<EmployeeInputView> prepareModelValidationErrorEmployees() {
+    return Stream.of(
+        new EmployeeInputView("", 213L),
+        new EmployeeInputView(null, 213L),
+        new EmployeeInputView("validName", null),
+        new EmployeeInputView("validName", -213L),
+        new EmployeeInputView(null, null));
+  }
 
-        EmployeeOutputView outputView = controller.create(inputView);
+  @Test
+  void createdEmployeeCorrectlyMapped() {
+    String name = "someName";
+    Long salary = 2771L;
+    EmployeeInputView inputView = new EmployeeInputView(name, salary);
+    employeeServiceMocker.mockCreatePassThroughEmployee();
 
-        assertEmployeeViewIsCorrect(outputView, name, salary);
-    }
+    EmployeeOutputView outputView = controller.create(inputView);
 
-    private static Stream<EmployeeInputView> prepareModelValidationErrorEmployees() {
-        return Stream.of(
-                new EmployeeInputView("", 213L),
-                new EmployeeInputView(null, 213L),
-                new EmployeeInputView("validName", null),
-                new EmployeeInputView("validName", -213L),
-                new EmployeeInputView(null, null)
-        );
-    }
+    assertEmployeeViewIsCorrect(outputView, name, salary);
+  }
 
-    @ParameterizedTest
-    @MethodSource("prepareModelValidationErrorEmployees")
-    void modelValidationErrorCreatingEmployee(EmployeeInputView inputView) {
-        employeeServiceMocker.mockCreatePassThroughEmployee();
+  @ParameterizedTest
+  @MethodSource("prepareModelValidationErrorEmployees")
+  void modelValidationErrorCreatingEmployee(EmployeeInputView inputView) {
+    employeeServiceMocker.mockCreatePassThroughEmployee();
 
-        assertThrows(ModelValidationException.class, () -> controller.create(inputView));
-    }
-
+    assertThrows(ModelValidationException.class, () -> controller.create(inputView));
+  }
 }

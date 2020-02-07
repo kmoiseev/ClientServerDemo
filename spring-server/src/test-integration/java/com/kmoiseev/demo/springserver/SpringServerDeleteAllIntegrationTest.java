@@ -11,22 +11,20 @@ import static com.kmoiseev.demo.springserver.model.EmployeeTestCreator.create;
 
 public class SpringServerDeleteAllIntegrationTest extends SpringServerIntegrationTestBase {
 
-    @Autowired
-    public SpringServerDeleteAllIntegrationTest(
-            EmployeeRepository employeeRepository,
-            TestRestTemplate testRestTemplate
-    ) {
-        super(employeeRepository, testRestTemplate);
-    }
+  @Autowired
+  public SpringServerDeleteAllIntegrationTest(
+      EmployeeRepository employeeRepository, TestRestTemplate testRestTemplate) {
+    super(employeeRepository, testRestTemplate);
+  }
 
-    @Test
-    void testDeleteAllEmployees() {
-        repositoryTestWrapper.persistEmployee(create("First", 10L));
-        repositoryTestWrapper.persistEmployee(create("Second", 20L));
-        repositoryTestWrapper.persistEmployee(create("Third", 30L));
+  @Test
+  void testDeleteAllEmployees() {
+    repositoryTestWrapper.persistEmployee(create("First", 10L));
+    repositoryTestWrapper.persistEmployee(create("Second", 20L));
+    repositoryTestWrapper.persistEmployee(create("Third", 30L));
 
-        restTemplateWithTestAuth().delete(getBaseUrl() + "employee/delete/all", Collections.emptyMap());
+    restTemplateWithTestAuth().delete(getBaseUrl() + "employee/delete/all", Collections.emptyMap());
 
-        repositoryTestWrapper.assertRepoIsEmpty();
-    }
+    repositoryTestWrapper.assertRepoIsEmpty();
+  }
 }

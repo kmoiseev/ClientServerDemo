@@ -7,14 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.mockito.Mockito.mock;
 
 public abstract class EmployeeControllerTestBase {
-    EmployeeController controller;
-    EmployeeServiceMocker employeeServiceMocker;
+  EmployeeController controller;
+  EmployeeServiceMocker employeeServiceMocker;
 
-    @BeforeEach
-    void initializeControllerWithMocks() {
-        EmployeeService employeeService = mock(EmployeeService.class);
+  @BeforeEach
+  void initializeControllerWithMocks() {
+    EmployeeService employeeService = mock(EmployeeService.class);
 
-        employeeServiceMocker = new EmployeeServiceMocker(employeeService);
-        controller = new EmployeeController(employeeService);
-    }
+    employeeServiceMocker = new EmployeeServiceMocker(employeeService);
+    controller = new EmployeeController(employeeService);
+  }
 }

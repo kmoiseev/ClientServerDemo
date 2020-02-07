@@ -11,17 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmployeeServiceGetAllTest extends EmployeeServiceTestBase {
 
-    @Test
-    void getAllReturnsRepositoryResultUnmodified() {
-        List<Employee> employees = Arrays.asList(
-                EmployeeTestCreator.create(21, "Semen", 212L),
-                EmployeeTestCreator.create(12, "Gary", 4114141L)
-        );
-        repositoryMocker.mockGetAllReturns(employees);
+  @Test
+  void getAllReturnsRepositoryResultUnmodified() {
+    List<Employee> employees =
+        Arrays.asList(
+            EmployeeTestCreator.create(21, "Semen", 212L),
+            EmployeeTestCreator.create(12, "Gary", 4114141L));
+    repositoryMocker.mockGetAllReturns(employees);
 
-        Iterable<Employee> employeesReturned = service.getAll();
+    Iterable<Employee> employeesReturned = service.getAll();
 
-        assertEquals(employees, employeesReturned, "getAll expected to forward iterable from repo");
-    }
-
+    assertEquals(employees, employeesReturned, "getAll expected to forward iterable from repo");
+  }
 }

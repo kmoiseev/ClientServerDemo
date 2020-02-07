@@ -8,15 +8,12 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class EmployeeOutputView {
-    private final Integer id;
-    private final String name;
-    private final Long salary;
+  private final Integer id;
+  private final String name;
+  private final Long salary;
 
-    public static EmployeeOutputView of(Employee employee) {
-        return new EmployeeOutputView(
-                employee.getId(),
-                employee.getName(),
-                employee.getSalary().getAmount()
-        );
-    }
+  public static EmployeeOutputView of(Employee employee) {
+    return new EmployeeOutputView(
+        employee.getId(), employee.getName(), employee.getSalary().getAmount());
+  }
 }

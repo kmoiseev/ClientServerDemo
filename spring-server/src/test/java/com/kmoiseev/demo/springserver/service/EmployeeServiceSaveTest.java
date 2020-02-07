@@ -8,23 +8,23 @@ import static com.kmoiseev.demo.springserver.model.EmployeeTestValidator.assertE
 
 public class EmployeeServiceSaveTest extends EmployeeServiceTestBase {
 
-    @Test
-    void saveEmployeeKeepsEmployeeUnmodified() {
-        Employee employee = EmployeeTestCreator.create(212, "Jacob", 76581L);
-        repositoryMocker.mockSavePassThroughEmployee();
+  @Test
+  void saveEmployeeKeepsEmployeeUnmodified() {
+    Employee employee = EmployeeTestCreator.create(212, "Jacob", 76581L);
+    repositoryMocker.mockSavePassThroughEmployee();
 
-        Employee employeeCreated = service.create(employee);
+    Employee employeeCreated = service.create(employee);
 
-        assertEmployeeIsCorrect(employeeCreated, employee.getId(), employee.getName(), employee.getSalary().getAmount());
-    }
+    assertEmployeeIsCorrect(
+        employeeCreated, employee.getId(), employee.getName(), employee.getSalary().getAmount());
+  }
 
-    @Test
-    void saveRepositoryMethodGetsCalled() {
-        Employee employee = EmployeeTestCreator.create(212, "Jacob", 76581L);
+  @Test
+  void saveRepositoryMethodGetsCalled() {
+    Employee employee = EmployeeTestCreator.create(212, "Jacob", 76581L);
 
-        service.create(employee);
+    service.create(employee);
 
-        repositoryMocker.verifySaveCalledOnceWith(employee);
-    }
-
+    repositoryMocker.verifySaveCalledOnceWith(employee);
+  }
 }

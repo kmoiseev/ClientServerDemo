@@ -4,11 +4,10 @@ import org.junit.jupiter.api.Test;
 
 public class EmployeeServiceDeleteAllTest extends EmployeeServiceTestBase {
 
-    @Test
-    void deleteAllRepositoryMethodGetsCalledOnce() {
-        service.deleteAll();
+  @Test
+  void deleteAllRepositoryMethodGetsCalledOnce() {
+    service.deleteAll();
 
-        repositoryMocker.verifyDeleteAllCalledOnce();
-    }
-
+    repositoryMocker.verifyDeleteAllCalledOnce();
+  }
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ModelValidationException extends RuntimeException {
-    public ModelValidationException(String message) {
-        super(message);
-    }
+  public ModelValidationException(String message) {
+    super(message);
+  }
 }

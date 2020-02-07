@@ -27,7 +27,7 @@ function App() {
                         <ApiIndicatorContainer/>
                     </Grid>
                     <Grid item>
-                        <AppHeader headerText="Employees Application Demo"/>
+                        <AppHeader headerText="Client Server Demo "/>
                     </Grid>
                     <Grid item>
                         <EmployeeFormContainer/>

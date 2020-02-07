@@ -11,27 +11,28 @@ import static org.mockito.Mockito.*;
 @AllArgsConstructor
 public class EmployeeServiceMocker {
 
-    private final EmployeeService service;
+  private final EmployeeService service;
 
-    public void mockCreatePassThroughEmployee() {
-        doAnswer(invocation -> invocation.getArgument(0)).when(service).create(any());
-    }
+  public void mockCreatePassThroughEmployee() {
+    doAnswer(invocation -> invocation.getArgument(0)).when(service).create(any());
+  }
 
-    public void mockUpdatePassThroughIdAndSalaryWithName(String name) {
-        doAnswer(invocation ->
+  public void mockUpdatePassThroughIdAndSalaryWithName(String name) {
+    doAnswer(
+            invocation ->
                 EmployeeTestCreator.create(
-                        invocation.getArgument(0, Integer.class),
-                        name,
-                        invocation.getArgument(1, Long.class)
-                )
-        ).when(service).updateSalary(any(), any());
-    }
+                    invocation.getArgument(0, Integer.class),
+                    name,
+                    invocation.getArgument(1, Long.class)))
+        .when(service)
+        .updateSalary(any(), any());
+  }
 
-    public void mockGetAllReturnsEmployees(Iterable<Employee> employees) {
-        when(service.getAll()).thenReturn(employees);
-    }
+  public void mockGetAllReturnsEmployees(Iterable<Employee> employees) {
+    when(service.getAll()).thenReturn(employees);
+  }
 
-    public void verifyDeleteAllCalledOnce() {
-        verify(service, times(1)).deleteAll();
-    }
+  public void verifyDeleteAllCalledOnce() {
+    verify(service, times(1)).deleteAll();
+  }
 }

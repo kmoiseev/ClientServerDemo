@@ -11,24 +11,23 @@ import static org.mockito.Mockito.mock;
 
 public class EmployeeControllerUpdateTest extends EmployeeControllerTestBase {
 
-    @BeforeEach
-    void initializeControllerWithMocks() {
-        EmployeeService employeeService = mock(EmployeeService.class);
+  @BeforeEach
+  void initializeControllerWithMocks() {
+    EmployeeService employeeService = mock(EmployeeService.class);
 
-        employeeServiceMocker = new EmployeeServiceMocker(employeeService);
-        controller = new EmployeeController(employeeService);
-    }
+    employeeServiceMocker = new EmployeeServiceMocker(employeeService);
+    controller = new EmployeeController(employeeService);
+  }
 
+  @Test
+  void updatedEmployeeCorrectlyMapped() {
+    Integer employeeId = 21441;
+    Long salary = 219921L;
+    String name = "someName";
+    employeeServiceMocker.mockUpdatePassThroughIdAndSalaryWithName(name);
 
-    @Test
-    void updatedEmployeeCorrectlyMapped() {
-        Integer employeeId = 21441;
-        Long salary = 219921L;
-        String name = "someName";
-        employeeServiceMocker.mockUpdatePassThroughIdAndSalaryWithName(name);
+    EmployeeOutputView outputView = controller.updateEmployeeSalary(employeeId, salary);
 
-        EmployeeOutputView outputView = controller.updateEmployeeSalary(employeeId, salary);
-
-        assertEmployeeViewIsCorrect(outputView, employeeId, name, salary);
-    }
+    assertEmployeeViewIsCorrect(outputView, employeeId, name, salary);
+  }
 }

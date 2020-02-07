@@ -22,75 +22,77 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 public class SpringServerUpdateIntegrationTest extends SpringServerIntegrationTestBase {
 
-    @Autowired
-    public SpringServerUpdateIntegrationTest(
-            EmployeeRepository employeeRepository,
-            TestRestTemplate testRestTemplate
-    ) {
-        super(employeeRepository, testRestTemplate);
-    }
+  @Autowired
+  public SpringServerUpdateIntegrationTest(
+      EmployeeRepository employeeRepository, TestRestTemplate testRestTemplate) {
+    super(employeeRepository, testRestTemplate);
+  }
 
-    @Test
-    void testUpdateEmployeeSuccess() {
-        String name = "Vlad Testov";
-        Long salary = 26661L;
-        Integer id = repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salary)).getId();
+  @Test
+  void testUpdateEmployeeSuccess() {
+    String name = "Vlad Testov";
+    Long salary = 26661L;
+    Integer id =
+        repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salary)).getId();
 
-        ResponseEntity<EmployeeOutputView> response = restTemplateWithTestAuth()
-                .exchange(
-                        getBaseUrl() + "employee/update/" + id + "/salary/" + salary,
-                        HttpMethod.PATCH,
-                        null,
-                        EmployeeOutputView.class
-                );
+    ResponseEntity<EmployeeOutputView> response =
+        restTemplateWithTestAuth()
+            .exchange(
+                getBaseUrl() + "employee/update/" + id + "/salary/" + salary,
+                HttpMethod.PATCH,
+                null,
+                EmployeeOutputView.class);
 
-        assertStatusCodeEquals(response, HttpStatus.OK);
-        assertResponseBodyIsNotEmpty(response);
-        assertEmployeeViewIsCorrect(response.getBody(), name, salary);
+    assertStatusCodeEquals(response, HttpStatus.OK);
+    assertResponseBodyIsNotEmpty(response);
+    assertEmployeeViewIsCorrect(response.getBody(), name, salary);
 
-        Employee savedEmployee = repositoryTestWrapper.getEmployeeOrThrow(id);
-        assertEmployeeIsCorrect(savedEmployee, name, salary);
-    }
+    Employee savedEmployee = repositoryTestWrapper.getEmployeeOrThrow(id);
+    assertEmployeeIsCorrect(savedEmployee, name, salary);
+  }
 
-    @Test
-    void testUpdateEmployeeReturnsSalaryCannotBeNegative() {
-        String name = "George";
-        Long salaryOld = 245L;
-        Long salaryNew = -23L;
-        Integer id = repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salaryOld)).getId();
+  @Test
+  void testUpdateEmployeeReturnsSalaryCannotBeNegative() {
+    String name = "George";
+    Long salaryOld = 245L;
+    Long salaryNew = -23L;
+    Integer id =
+        repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salaryOld)).getId();
 
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .exchange(
-                        getBaseUrl() + "employee/update/" + id + "/salary/" + salaryNew,
-                        HttpMethod.PATCH,
-                        null,
-                        ErrorView.class
-                );
+    ResponseEntity<ErrorView> response =
+        restTemplateWithTestAuth()
+            .exchange(
+                getBaseUrl() + "employee/update/" + id + "/salary/" + salaryNew,
+                HttpMethod.PATCH,
+                null,
+                ErrorView.class);
 
-        assertStatusCodeEquals(response, BAD_REQUEST);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Salary cannot be negative");
-        Employee employee = repositoryTestWrapper.getEmployeeOrThrow(id);
-        assertEmployeeIsCorrect(employee, name, salaryOld);
-    }
+    assertStatusCodeEquals(response, BAD_REQUEST);
+    assertResponseBodyIsNotEmpty(response);
+    assertErrorViewIsCorrect(response.getBody(), "Salary cannot be negative");
+    Employee employee = repositoryTestWrapper.getEmployeeOrThrow(id);
+    assertEmployeeIsCorrect(employee, name, salaryOld);
+  }
 
-    @Test
-    void testUpdateEmployeeReturnsEmployeeNotFound() {
-        String name = "George";
-        Long salary = 2145L;
-        Integer idValid = repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salary)).getId();
-        Integer idInvalid = idValid + 1;
+  @Test
+  void testUpdateEmployeeReturnsEmployeeNotFound() {
+    String name = "George";
+    Long salary = 2145L;
+    Integer idValid =
+        repositoryTestWrapper.persistEmployee(EmployeeTestCreator.create(name, salary)).getId();
+    Integer idInvalid = idValid + 1;
 
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .exchange(
-                        getBaseUrl() + "employee/update/" + idInvalid + "/salary/" + salary,
-                        HttpMethod.PATCH,
-                        null,
-                        ErrorView.class
-                );
+    ResponseEntity<ErrorView> response =
+        restTemplateWithTestAuth()
+            .exchange(
+                getBaseUrl() + "employee/update/" + idInvalid + "/salary/" + salary,
+                HttpMethod.PATCH,
+                null,
+                ErrorView.class);
 
-        assertStatusCodeEquals(response, NOT_FOUND);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Employee with id " + idInvalid + " does not exist");
-    }
+    assertStatusCodeEquals(response, NOT_FOUND);
+    assertResponseBodyIsNotEmpty(response);
+    assertErrorViewIsCorrect(
+        response.getBody(), "Employee with id " + idInvalid + " does not exist");
+  }
 }

@@ -1,25 +1,15 @@
 package com.kmoiseev.demo.springserver;
 
 import com.kmoiseev.demo.springserver.model.Employee;
-import com.kmoiseev.demo.springserver.model.EmployeeTestCreator;
 import com.kmoiseev.demo.springserver.repository.EmployeeRepository;
 import com.kmoiseev.demo.springserver.view.input.EmployeeInputView;
 import com.kmoiseev.demo.springserver.view.output.EmployeeOutputView;
 import com.kmoiseev.demo.springserver.view.output.ErrorView;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestTemplate;
 
 import static com.kmoiseev.demo.springserver.ResponseValidator.assertResponseBodyIsNotEmpty;
 import static com.kmoiseev.demo.springserver.ResponseValidator.assertStatusCodeEquals;
@@ -27,114 +17,108 @@ import static com.kmoiseev.demo.springserver.model.EmployeeTestValidator.assertE
 import static com.kmoiseev.demo.springserver.view.EmployeeOutputViewTestValidator.assertEmployeeViewIsCorrect;
 import static com.kmoiseev.demo.springserver.view.ErrorViewTestValidator.assertErrorViewIsCorrect;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-
 
 public class SpringServerSaveIntegrationTest extends SpringServerIntegrationTestBase {
 
-    @Autowired
-    public SpringServerSaveIntegrationTest(
-            EmployeeRepository employeeRepository,
-            TestRestTemplate testRestTemplate
-    ) {
-        super(employeeRepository, testRestTemplate);
-    }
+  @Autowired
+  public SpringServerSaveIntegrationTest(
+      EmployeeRepository employeeRepository, TestRestTemplate testRestTemplate) {
+    super(employeeRepository, testRestTemplate);
+  }
 
-    @Test
-    void testCreateEmployeeSuccess() {
-        String name = "Petr Fedorov";
-        Long salary = 26661L;
+  @Test
+  void testCreateEmployeeSuccess() {
+    String name = "Petr Fedorov";
+    Long salary = 26661L;
 
-        ResponseEntity<EmployeeOutputView> response = restTemplateWithTestAuth()
-                .postForEntity(
-                        getBaseUrl() + "employee/create",
-                        new EmployeeInputView(name, salary),
-                        EmployeeOutputView.class
-                );
+    ResponseEntity<EmployeeOutputView> response =
+        restTemplateWithTestAuth()
+            .postForEntity(
+                getBaseUrl() + "employee/create",
+                new EmployeeInputView(name, salary),
+                EmployeeOutputView.class);
 
-        assertStatusCodeEquals(response, HttpStatus.CREATED);
-        assertResponseBodyIsNotEmpty(response);
-        assertEmployeeViewIsCorrect(response.getBody(), name, salary);
+    assertStatusCodeEquals(response, HttpStatus.CREATED);
+    assertResponseBodyIsNotEmpty(response);
+    assertEmployeeViewIsCorrect(response.getBody(), name, salary);
 
-        Employee savedEmployee = repositoryTestWrapper.getFirstRepoEmployeeOrThrow();
-        assertEmployeeIsCorrect(savedEmployee, name, salary);
-    }
+    Employee savedEmployee = repositoryTestWrapper.getFirstRepoEmployeeOrThrow();
+    assertEmployeeIsCorrect(savedEmployee, name, salary);
+  }
 
-    @Test
-    void testCreateEmployeeReturnsNameCannotBeEmptyWhenEmpty() throws Exception {
-        String name = "";
-        Long salary = 26661L;
+  @Test
+  void testCreateEmployeeReturnsNameCannotBeEmptyWhenEmpty() throws Exception {
+    String name = "";
+    Long salary = 26661L;
 
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .postForEntity(
-                        getBaseUrl() + "employee/create",
-                        new EmployeeInputView(name, salary),
-                        ErrorView.class
-                );
+    ResponseEntity<ErrorView> response =
+        restTemplateWithTestAuth()
+            .postForEntity(
+                getBaseUrl() + "employee/create",
+                new EmployeeInputView(name, salary),
+                ErrorView.class);
 
-        assertStatusCodeEquals(response, BAD_REQUEST);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Employee name cannot be empty");
+    assertStatusCodeEquals(response, BAD_REQUEST);
+    assertResponseBodyIsNotEmpty(response);
+    assertErrorViewIsCorrect(response.getBody(), "Employee name cannot be empty");
 
-        repositoryTestWrapper.assertRepoIsEmpty();
-    }
+    repositoryTestWrapper.assertRepoIsEmpty();
+  }
 
-    @Test
-    void testCreateEmployeeReturnsNameCannotBeEmptyWhenNull() throws Exception {
-        String name = null;
-        Long salary = 2141L;
+  @Test
+  void testCreateEmployeeReturnsNameCannotBeEmptyWhenNull() throws Exception {
+    String name = null;
+    Long salary = 2141L;
 
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .postForEntity(
-                        getBaseUrl() + "employee/create",
-                        new EmployeeInputView(name, salary),
-                        ErrorView.class
-                );
+    ResponseEntity<ErrorView> response =
+        restTemplateWithTestAuth()
+            .postForEntity(
+                getBaseUrl() + "employee/create",
+                new EmployeeInputView(name, salary),
+                ErrorView.class);
 
-        assertStatusCodeEquals(response, BAD_REQUEST);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Employee name cannot be empty");
+    assertStatusCodeEquals(response, BAD_REQUEST);
+    assertResponseBodyIsNotEmpty(response);
+    assertErrorViewIsCorrect(response.getBody(), "Employee name cannot be empty");
 
-        repositoryTestWrapper.assertRepoIsEmpty();
-    }
+    repositoryTestWrapper.assertRepoIsEmpty();
+  }
 
-    @Test
-    void testCreateEmployeeReturnsSalaryCannotBeEmptyWhenNull() throws Exception {
-        String name = "valid";
-        Long salary = null;
+  @Test
+  void testCreateEmployeeReturnsSalaryCannotBeEmptyWhenNull() throws Exception {
+    String name = "valid";
+    Long salary = null;
 
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .postForEntity(
-                        getBaseUrl() + "employee/create",
-                        new EmployeeInputView(name, salary),
-                        ErrorView.class
-                );
+    ResponseEntity<ErrorView> response =
+        restTemplateWithTestAuth()
+            .postForEntity(
+                getBaseUrl() + "employee/create",
+                new EmployeeInputView(name, salary),
+                ErrorView.class);
 
-        assertStatusCodeEquals(response, BAD_REQUEST);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Salary cannot be null");
+    assertStatusCodeEquals(response, BAD_REQUEST);
+    assertResponseBodyIsNotEmpty(response);
+    assertErrorViewIsCorrect(response.getBody(), "Salary cannot be null");
 
-        repositoryTestWrapper.assertRepoIsEmpty();
-    }
+    repositoryTestWrapper.assertRepoIsEmpty();
+  }
 
-    @Test
-    void testCreateEmployeeReturnsSalaryCannotBeNegative() throws Exception {
-        String name = "valid";
-        Long salary = -123L;
+  @Test
+  void testCreateEmployeeReturnsSalaryCannotBeNegative() throws Exception {
+    String name = "valid";
+    Long salary = -123L;
 
-        ResponseEntity<ErrorView> response = restTemplateWithTestAuth()
-                .postForEntity(
-                        getBaseUrl() + "employee/create",
-                        new EmployeeInputView(name, salary),
-                        ErrorView.class
-                );
+    ResponseEntity<ErrorView> response =
+        restTemplateWithTestAuth()
+            .postForEntity(
+                getBaseUrl() + "employee/create",
+                new EmployeeInputView(name, salary),
+                ErrorView.class);
 
-        assertStatusCodeEquals(response, BAD_REQUEST);
-        assertResponseBodyIsNotEmpty(response);
-        assertErrorViewIsCorrect(response.getBody(), "Salary cannot be negative");
+    assertStatusCodeEquals(response, BAD_REQUEST);
+    assertResponseBodyIsNotEmpty(response);
+    assertErrorViewIsCorrect(response.getBody(), "Salary cannot be negative");
 
-        repositoryTestWrapper.assertRepoIsEmpty();
-    }
-
+    repositoryTestWrapper.assertRepoIsEmpty();
+  }
 }

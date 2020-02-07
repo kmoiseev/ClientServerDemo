@@ -10,15 +10,15 @@ import java.util.Objects;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class EmployeeSalary {
-    private final long amount;
+  private final long amount;
 
-    public static EmployeeSalary of(Long salary) {
-        if (Objects.isNull(salary)) {
-            throw new ModelValidationException("Salary cannot be null");
-        }
-        if (salary < 0) {
-            throw new ModelValidationException("Salary cannot be negative");
-        }
-        return new EmployeeSalary(salary);
+  public static EmployeeSalary of(Long salary) {
+    if (Objects.isNull(salary)) {
+      throw new ModelValidationException("Salary cannot be null");
     }
+    if (salary < 0) {
+      throw new ModelValidationException("Salary cannot be negative");
+    }
+    return new EmployeeSalary(salary);
+  }
 }

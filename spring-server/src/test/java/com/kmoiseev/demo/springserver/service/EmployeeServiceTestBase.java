@@ -9,15 +9,15 @@ import static org.mockito.Mockito.mock;
 
 public abstract class EmployeeServiceTestBase {
 
-    EmployeeService service;
-    EmployeeRepositoryMocker repositoryMocker;
+  EmployeeService service;
+  EmployeeRepositoryMocker repositoryMocker;
 
-    @BeforeEach
-    void initializeControllerWithMocks() {
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+  @BeforeEach
+  void initializeControllerWithMocks() {
+    EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 
-        repositoryMocker = new EmployeeRepositoryMocker(employeeRepository);
+    repositoryMocker = new EmployeeRepositoryMocker(employeeRepository);
 
-        service = new EmployeeServiceImpl(employeeRepository);
-    }
+    service = new EmployeeServiceImpl(employeeRepository);
+  }
 }

@@ -10,39 +10,37 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @AllArgsConstructor
 public class EmployeeRepositoryTestWrapper {
 
-    private final EmployeeRepository repository;
+  private final EmployeeRepository repository;
 
-    void clean() {
-        repository.deleteAll();
-    }
+  void clean() {
+    repository.deleteAll();
+  }
 
-    Employee getFirstRepoEmployeeOrThrow() {
-        return getAll().findFirst()
-                .orElseThrow(employeeNotPresentExceptionSupplier());
-    }
+  Employee getFirstRepoEmployeeOrThrow() {
+    return getAll().findFirst().orElseThrow(employeeNotPresentExceptionSupplier());
+  }
 
-    void assertRepoIsEmpty() {
-        assertEquals(0, getAll().count(), "Expected no employees present in repository");
-    }
+  void assertRepoIsEmpty() {
+    assertEquals(0, getAll().count(), "Expected no employees present in repository");
+  }
 
-    Employee persistEmployee(Employee employee) {
-        return repository.save(employee);
-    }
+  Employee persistEmployee(Employee employee) {
+    return repository.save(employee);
+  }
 
-    Employee getEmployeeOrThrow(Integer id) {
-        return repository.findById(id).orElseThrow(employeeNotPresentExceptionSupplier());
-    }
+  Employee getEmployeeOrThrow(Integer id) {
+    return repository.findById(id).orElseThrow(employeeNotPresentExceptionSupplier());
+  }
 
-    private Stream<Employee> getAll() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false);
-    }
+  private Stream<Employee> getAll() {
+    return StreamSupport.stream(repository.findAll().spliterator(), false);
+  }
 
-    private Supplier<AssertionFailedError> employeeNotPresentExceptionSupplier() {
-        return () -> new AssertionFailedError("Employee must present in repository");
-    }
+  private Supplier<AssertionFailedError> employeeNotPresentExceptionSupplier() {
+    return () -> new AssertionFailedError("Employee must present in repository");
+  }
 }

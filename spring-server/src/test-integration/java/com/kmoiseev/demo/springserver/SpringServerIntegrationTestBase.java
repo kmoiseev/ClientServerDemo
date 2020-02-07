@@ -16,38 +16,33 @@ import org.springframework.web.client.RestTemplate;
 @ActiveProfiles("test")
 public class SpringServerIntegrationTestBase {
 
-    final EmployeeRepositoryTestWrapper repositoryTestWrapper;
-    TestRestTemplate testRestTemplate;
+  final EmployeeRepositoryTestWrapper repositoryTestWrapper;
+  TestRestTemplate testRestTemplate;
+  @LocalServerPort private int port;
 
-    @Autowired
-    public SpringServerIntegrationTestBase(
-            EmployeeRepository employeeRepository,
-            TestRestTemplate testRestTemplate
-    ) {
-        this.repositoryTestWrapper = new EmployeeRepositoryTestWrapper(employeeRepository);
-        this.testRestTemplate = testRestTemplate;
+  @Autowired
+  public SpringServerIntegrationTestBase(
+      EmployeeRepository employeeRepository, TestRestTemplate testRestTemplate) {
+    this.repositoryTestWrapper = new EmployeeRepositoryTestWrapper(employeeRepository);
+    this.testRestTemplate = testRestTemplate;
 
-        // Default RestTemplate requestFactory does not support PATCH
-        // Using apache Http request factory
-        RestTemplate restTemplate = testRestTemplate.getRestTemplate();
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
-    }
+    // Default RestTemplate requestFactory does not support PATCH
+    // Using apache Http request factory
+    RestTemplate restTemplate = testRestTemplate.getRestTemplate();
+    HttpClient httpClient = HttpClientBuilder.create().build();
+    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
+  }
 
-    TestRestTemplate restTemplateWithTestAuth() {
-        return testRestTemplate.withBasicAuth("TEST", "TEST");
-    }
+  TestRestTemplate restTemplateWithTestAuth() {
+    return testRestTemplate.withBasicAuth("TEST", "TEST");
+  }
 
-    @LocalServerPort
-    private int port;
+  String getBaseUrl() {
+    return "http://localhost:" + port + "/";
+  }
 
-    String getBaseUrl() {
-        return "http://localhost:" + port + "/";
-    }
-
-    @BeforeEach
-    void cleanUpDb() {
-        repositoryTestWrapper.clean();
-    }
-
+  @BeforeEach
+  void cleanUpDb() {
+    repositoryTestWrapper.clean();
+  }
 }

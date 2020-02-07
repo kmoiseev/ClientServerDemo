@@ -13,36 +13,31 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository repository;
+  private final EmployeeRepository repository;
 
-    @Override
-    public Employee create(Employee employee) {
-        return repository.save(employee);
-    }
+  @Override
+  public Employee create(Employee employee) {
+    return repository.save(employee);
+  }
 
-    @Override
-    public Employee updateSalary(Integer id, Long salary) {
-        Employee employee = repository.findById(id)
-                .orElseThrow(() ->
-                        new ModelNotFoundException(
-                                "Employee with id " + id + " does not exist"
-                        )
-                );
+  @Override
+  public Employee updateSalary(Integer id, Long salary) {
+    Employee employee =
+        repository
+            .findById(id)
+            .orElseThrow(
+                () -> new ModelNotFoundException("Employee with id " + id + " does not exist"));
 
-        return repository.save(
-                employee.withSalary(
-                        EmployeeSalary.of(salary)
-                )
-        );
-    }
+    return repository.save(employee.withSalary(EmployeeSalary.of(salary)));
+  }
 
-    @Override
-    public Iterable<Employee> getAll() {
-        return repository.findAll();
-    }
+  @Override
+  public Iterable<Employee> getAll() {
+    return repository.findAll();
+  }
 
-    @Override
-    public void deleteAll() {
-        repository.deleteAll();
-    }
+  @Override
+  public void deleteAll() {
+    repository.deleteAll();
+  }
 }

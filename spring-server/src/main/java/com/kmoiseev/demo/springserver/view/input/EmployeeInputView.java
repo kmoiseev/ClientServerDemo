@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 public class EmployeeInputView {
-    private final String name;
-    private final Long salary;
+  private final String name;
+  private final Long salary;
 }
