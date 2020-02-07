@@ -4,6 +4,7 @@ import {TextField} from "@material-ui/core";
 
 const EmployeeNameField = (props) => (
     <TextField
+        {...props}
         value={props.value}
         disabled={true}
     />

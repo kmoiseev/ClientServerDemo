@@ -1,7 +1,7 @@
 import {
     API_CHAIN_FINISHED_ERRONEOUSLY,
-    API_CHAIN_FINISHED_SUCCESSFULLY, CLEAR_API_CHAIN_INDICATION,
-    START_API_CHAIN
+    API_CHAIN_FINISHED_SUCCESSFULLY,
+    API_CHAIN_STARTED
 } from "../actions/types/ApiIndicationActionTypes";
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
 
 const apiIndicationReducer = (state = initialState, action) => {
     switch (action.type) {
-        case START_API_CHAIN:
+        case API_CHAIN_STARTED:
             return {
                 ...state,
                 inProgress: true,
@@ -31,8 +31,6 @@ const apiIndicationReducer = (state = initialState, action) => {
                 successInProgress: false,
                 failureInProgress: true,
             };
-        case CLEAR_API_CHAIN_INDICATION:
-            return initialState;
         default:
             return state;
     }

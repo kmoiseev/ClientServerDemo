@@ -41,6 +41,7 @@ const renderEmployee = (props, employee) => (
             <Button
                 onClick={() => props.handleButtonClickForEmployee(employee.id, employee.salary)}
                 disabled={props.isUpdateButtonDisabled(employee.id)}
+                variant="contained"
             >
                 {props.buttonText}
             </Button>

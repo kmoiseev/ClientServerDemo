@@ -1,6 +1,6 @@
 import {createEmployeeApi, deleteAllEmployeesApi, getAllEmployeesApi, updateEmployeeSalaryApi} from "../../api/EmployeeApi";
 import {updateEmployeeList, updateEmployeeListSingleEmployeeSalary} from "../EmployeeListActions";
-import {apiChainFinishedErroneously, apiChainFinishedSuccessfully, apiChainIndicatorOff, startApiChain} from "../ApiIndicationActions";
+import {apiChainError, apiChainFinishedSuccess, apiChainIndicatorOff, apiChainStarted} from "../ApiIndicationActions";
 import {clearEmployeeForm} from "../EmployeeFormActions";
 import {fromApiEmployeeList, fromApiSalary, toApiSalary} from "../../static/EmployeeConverter";
 
@@ -18,34 +18,24 @@ const handleJsonResponse = (response) => {
     return response.json();
 };
 
-const considerApiSuccess = _ => dispatch => {
-    dispatch(apiChainFinishedSuccessfully());
-    setTimeout(() => dispatch(apiChainIndicatorOff()), 2000);
-};
-
-const considerApiReject = _ => (dispatch) => {
-    dispatch(apiChainFinishedErroneously());
-    setTimeout(() => dispatch(apiChainIndicatorOff()), 2000);
-};
-
 export const createEmployee = (name, salary) => dispatch => {
-    dispatch(startApiChain());
+    dispatch(apiChainStarted());
     createEmployeeApi(name, toApiSalary(salary))
         .then(handleJsonResponse)
         .then(_ => {
-            dispatch(considerApiSuccess());
+            dispatch(apiChainFinishedSuccess());
             dispatch(clearEmployeeForm());
             dispatch(refreshAllEmployees());
         })
-        .catch(_ => dispatch(considerApiReject()));
+        .catch(_ => dispatch(apiChainError()));
 };
 
 export const updateEmployeeSalary = (id, salary) => dispatch => {
-    dispatch(startApiChain());
+    dispatch(apiChainStarted());
     updateEmployeeSalaryApi(id, toApiSalary(salary))
         .then(handleJsonResponse)
         .then(jsonResponse => {
-            dispatch(considerApiSuccess());
+            dispatch(apiChainFinishedSuccess());
             dispatch(
                 updateEmployeeListSingleEmployeeSalary(
                     jsonResponse.id,
@@ -53,7 +43,7 @@ export const updateEmployeeSalary = (id, salary) => dispatch => {
                 )
             );
         })
-        .catch(_ => dispatch(considerApiReject()));
+        .catch(_ => dispatch(apiChainFinishedSuccess()));
 };
 
 export const refreshAllEmployees = () => (dispatch) => {
@@ -66,12 +56,12 @@ export const refreshAllEmployees = () => (dispatch) => {
 };
 
 export const deleteAllEmployees = () => (dispatch) => {
-    dispatch(startApiChain());
+    dispatch(apiChainStarted());
     deleteAllEmployeesApi()
         .then(handleEmptyResponse)
         .then(_ => {
-            dispatch(considerApiSuccess());
+            dispatch(apiChainFinishedSuccess());
             dispatch(refreshAllEmployees());
         })
-        .catch(_ => dispatch(considerApiReject()));
+        .catch(_ => dispatch(apiChainError()));
 };

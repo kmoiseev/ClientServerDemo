@@ -16,14 +16,22 @@ function App() {
             <Grid
                 container
                 direction="column"
-                justify="center"
-                alignItems="center"
+                justify="space-between"
+                alignItems="stretch"
                 spacing={2}
             >
-                <ApiIndicatorContainer/>
-                <EmployeeFormContainer/>
-                <EmployeeTableContainer/>
-                <RemoveEmployeesButtonContainer/>
+                <Grid item>
+                    <ApiIndicatorContainer/>
+                </Grid>
+                <Grid item>
+                    <EmployeeFormContainer/>
+                </Grid>
+                <Grid item>
+                    <EmployeeTableContainer/>
+                </Grid>
+                <Grid item>
+                    <RemoveEmployeesButtonContainer/>
+                </Grid>
             </Grid>
         </ThemeProvider>
     );

@@ -7,6 +7,8 @@ const RemoveEmployeesButton = props => (
     <Button
         disabled={props.buttonDisabled}
         onClick={props.handleDeleteAll}
+        color="secondary"
+        variant="contained"
     >
         {props.buttonText}
     </Button>

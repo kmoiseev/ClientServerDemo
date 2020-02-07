@@ -19,6 +19,7 @@ const proxyChange = (input, props) => {
 
 const EmployeeNameInput = (props) => (
     <TextField
+        {...props}
         label={props.label}
         value={props.value}
         onChange={event => proxyChange(event.target.value, props)}

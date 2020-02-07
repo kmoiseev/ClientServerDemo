@@ -1,22 +1,19 @@
 import {
     API_CHAIN_FINISHED_ERRONEOUSLY,
     API_CHAIN_FINISHED_SUCCESSFULLY,
-    CLEAR_API_CHAIN_INDICATION,
-    START_API_CHAIN
+    API_CHAIN_STARTED
 } from "./types/ApiIndicationActionTypes";
 
-export const startApiChain = () => ({
-    type: START_API_CHAIN
+
+
+export const apiChainStarted = () => ({
+    type: API_CHAIN_STARTED
 });
 
-export const apiChainFinishedSuccessfully = () => ({
+export const apiChainFinishedSuccess = () => ({
     type: API_CHAIN_FINISHED_SUCCESSFULLY
 });
 
-export const apiChainFinishedErroneously = () => ({
+export const apiChainError = () => ({
     type: API_CHAIN_FINISHED_ERRONEOUSLY
-});
-
-export const apiChainIndicatorOff = _ => ({
-    type: CLEAR_API_CHAIN_INDICATION
 });
