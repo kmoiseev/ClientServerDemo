@@ -38,6 +38,7 @@ Where
 
 `--build` - means rebuild images before starting. No need if sources were not updated 
  
+Edit `.env` file to override configurations, such as port bindings, db schema/username/password, security username/passsword/role
 
 ## Folders structure
 
