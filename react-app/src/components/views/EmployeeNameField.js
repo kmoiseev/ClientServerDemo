@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TextField} from "@material-ui/core";
+import { TextField } from '@material-ui/core';
 
 const EmployeeNameField = (props) => (
     <TextField
@@ -11,7 +11,7 @@ const EmployeeNameField = (props) => (
 );
 
 EmployeeNameField.propTypes = {
-    value: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default EmployeeNameField;

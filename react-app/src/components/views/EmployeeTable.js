@@ -1,21 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
-import EmployeeNameField from "./EmployeeNameField";
-import EmployeeSalaryInput from "./EmployeeSalaryInput";
+import {
+  Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+} from '@material-ui/core';
+import EmployeeNameField from './EmployeeNameField';
+import EmployeeSalaryInput from './EmployeeSalaryInput';
 
 const EmployeeTable = (props) => (
     <TableContainer>
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Salary</TableCell>
+                    <TableCell><h2>Name</h2></TableCell>
+                    <TableCell><h2>Salary</h2></TableCell>
                     <TableCell/>
                 </TableRow>
             </TableHead>
             <TableBody>
-                {props.employees.map(employee => renderEmployee(props, employee))}
+                {props.employees.map((employee) => renderEmployee(props, employee))}
             </TableBody>
         </Table>
     </TableContainer>
@@ -31,7 +33,7 @@ const renderEmployee = (props, employee) => (
         <TableCell>
             <EmployeeSalaryInput
                 value={employee.salary}
-                onChange={value => props.handleSalaryChangeForEmployee(employee.id, value)}
+                onChange={(value) => props.handleSalaryChangeForEmployee(employee.id, value)}
                 onInvalid={() => props.markSalaryInvalid(employee.id)}
                 onValid={() => props.markSalaryValid(employee.id)}
                 isInvalid={props.isSalaryInvalid(employee.id)}
@@ -50,21 +52,21 @@ const renderEmployee = (props, employee) => (
 );
 
 EmployeeTable.propTypes = {
-    employees: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            salary: PropTypes.string.isRequired,
-        })
-    ),
-    isUpdateButtonDisabled: PropTypes.func.isRequired,
+  employees: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      salary: PropTypes.string.isRequired,
+    }),
+  ),
+  isUpdateButtonDisabled: PropTypes.func.isRequired,
 
-    handleButtonClickForEmployee: PropTypes.func.isRequired,
-    handleSalaryChangeForEmployee: PropTypes.func.isRequired,
+  handleButtonClickForEmployee: PropTypes.func.isRequired,
+  handleSalaryChangeForEmployee: PropTypes.func.isRequired,
 
-    markSalaryInvalid: PropTypes.func.isRequired,
-    markSalaryValid: PropTypes.func.isRequired,
-    isSalaryInvalid: PropTypes.func.isRequired,
+  markSalaryInvalid: PropTypes.func.isRequired,
+  markSalaryValid: PropTypes.func.isRequired,
+  isSalaryInvalid: PropTypes.func.isRequired,
 };
 
 export default EmployeeTable;

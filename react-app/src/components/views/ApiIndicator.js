@@ -1,83 +1,81 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import {CircularProgress} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { CircularProgress, Fade } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
-const successPropOrFailure = props => {
-    return props.success || props.failure;
+const getCircularProgressStyle = (props) => {
+  let color = 'blue';
+  if (props.success) {
+    color = 'green';
+  } else if (props.failure) {
+    color = 'red';
+  }
+  return {
+    color,
+  };
 };
 
-const ApiIndicator = props => {
+function ApiIndicator(props) {
+  const { inProgress, success, failure } = props;
 
-    const [needToStop, setNeedToStop] = React.useState(false);
-    const [successOrFailure, setSuccessOrFailure] = React.useState(successPropOrFailure(props));
-    const [progress, setProgress] = React.useState(0);
+  const [fade, setFade] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const [progressChangingAfterMax, setProgressChangingAfterMax] = React.useState(false);
 
-    React.useEffect(() => {
-        function tick() {
-            // reset when reaching 100%
-            setProgress(oldProgress => oldProgress >= 100 ? 0 : oldProgress + (needToStop ? 0 : 1));
+  React.useEffect(() => {
+    const tick = (_) => {
+      setProgress((oldProgress) => {
+        if (progressChangingAfterMax) {
+          return oldProgress >= 100 && progressChangingAfterMax ? 0 : oldProgress + 2;
         }
+        return oldProgress < 100 ? oldProgress + 2 : oldProgress;
+      });
+    };
 
-        const timer = setInterval(tick, 20);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+    const timer = setInterval(tick, 20);
+    return () => clearInterval(timer);
+  });
 
-    React.useEffect(() => {
-        setSuccessOrFailure(prevSuccessOrFailure => {
-            const newSuccessOrFailure = successPropOrFailure(props);
-            console.log(newSuccessOrFailure);
-            if (newSuccessOrFailure !== prevSuccessOrFailure) {
-                if (newSuccessOrFailure === true) {
-                    setNeedToStop(_ => true);
-                } else {
-                    setNeedToStop(_ => false);
-                }
-            }
-            return newSuccessOrFailure;
-        });
-    }, []);
+  React.useEffect(() => {
+    if (inProgress) {
+      setFade(true);
+      setProgress(0);
+      setProgressChangingAfterMax(true);
+    }
+    if (success || failure) {
+      setProgressChangingAfterMax(false);
 
-    return (
+      const timer = setTimeout((_) => setFade(false), 1000);
+      return () => clearTimeout(timer);
+    }
+
+    return undefined;
+  }, [inProgress, success, failure]);
+
+  return (
         <Grid
             container
             direction="row"
             justify="flex-end"
             alignItems="flex-start"
         >
-            <Grid item>
-                <CircularProgress
-                    {...getCircularProgressProps(props)}
-                    value={progress}
-                    variant="determinate"
-                />
-            </Grid>
+            <Fade in={fade} timeout={250}>
+                <Grid item>
+                    <CircularProgress
+                        style={getCircularProgressStyle(props)}
+                        value={progress}
+                        variant="determinate"
+                    />
+                </Grid>
+            </Fade>
         </Grid>
-    );
-};
-
-const getCircularProgressProps = (props) => {
-    if (props.inProgress) {
-        return {
-            style: {color: 'blue'},
-        };
-    } else if (props.success) {
-        return {
-            style: {color: 'green'},
-        };
-    } else {
-        return {
-            style: {color: 'red'},
-        };
-    }
-};
+  );
+}
 
 ApiIndicator.propTypes = {
-    inProgress: PropTypes.bool.isRequired,
-    success: PropTypes.bool.isRequired,
-    failure: PropTypes.bool.isRequired,
+  inProgress: PropTypes.bool.isRequired,
+  success: PropTypes.bool.isRequired,
+  failure: PropTypes.bool.isRequired,
 };
 
 export default ApiIndicator;

@@ -1,32 +1,33 @@
-import * as React from "react";
+import * as React from 'react';
 import PropTypes from 'prop-types';
 
-const withInitializer = (WrappedComponent) => {
-    class ComponentWithInitializer extends React.Component {
+function withInitializer(WrappedComponent) {
+  class ComponentWithInitializer extends React.Component {
+    constructor(props) {
+      super(props);
 
-        constructor(props) {
-            super(props);
-
-            this.state = {
-                initialized: false,
-            };
-        }
-
-        componentDidMount() {
-            this.props.initializingFunction();
-        }
-
-        render = () => (
-            <WrappedComponent {...this.props} />
-        );
+      this.state = {
+        initialized: false,
+      };
     }
 
-    ComponentWithInitializer.propTypes = {
-        ...WrappedComponent.propTypes,
-        initializingFunction: PropTypes.func.isRequired,
-    };
+    componentDidMount() {
+      this.props.initializingFunction();
+    }
 
-    return ComponentWithInitializer;
-};
+    render() {
+      return (
+            <WrappedComponent {...this.props} />
+      );
+    }
+  }
+
+  ComponentWithInitializer.propTypes = {
+    ...WrappedComponent.propTypes,
+    initializingFunction: PropTypes.func.isRequired,
+  };
+
+  return ComponentWithInitializer;
+}
 
 export default withInitializer;
